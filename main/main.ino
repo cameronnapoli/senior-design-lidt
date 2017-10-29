@@ -38,15 +38,11 @@ void loop() {
         pin1Counter++;
         Serial.print("pin1: LOW => HIGH, counter: ");
         Serial.println(pin1Counter);
-    } else {
-        Serial.println("pin1 =>  LOW");
     }
 
     if(pin2Val == HIGH && pin2Prev == LOW) {
         pin2Counter++;
         Serial.print("pin2: LOW => HIGH, counter: ");
         Serial.println(pin2Counter);
-    } else {
-        Serial.println("pin2 =>  LOW");
     }
 }
