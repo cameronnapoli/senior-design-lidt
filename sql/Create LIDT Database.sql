@@ -60,6 +60,13 @@ CREATE TABLE IF NOT EXISTS Device (
     CONSTRAINT UX_Device UNIQUE KEY (MACAddress)
 );
 
+CREATE TABLE DeviceEvents (
+	DeviceID NVARCHAR(36),
+	CreatedDate DATETIME NOT NULL DEFAULT NOW(),
+	EventType ENUM('entry', 'exit'),
+	PRIMARY KEY(DeviceID)
+);
+
 CREATE TABLE IF NOT EXISTS ClientBusinessHours (
     ClientID INT UNSIGNED 	NOT NULL REFERENCES Client(ClientID),
     DayOfWeek INT			NOT NULL,
