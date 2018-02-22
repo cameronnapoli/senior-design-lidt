@@ -6,6 +6,7 @@
  * Cameron Napoli
  * Raymond Wang
  * Jeremy Quintana
+ *Board: WeMOS D1 Mini NodeMCU
   */
 
 #include <ESP8266WiFi.h>
