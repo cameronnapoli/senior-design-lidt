@@ -9,9 +9,9 @@
  *Board: WeMOS D1 Mini NodeMCU
   */
 
+#include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <WiFiClientSecure.h>
 
 WiFiClient client;
 const char mySSID[] = "JeremyFoundation 2.4";
@@ -39,53 +39,37 @@ void errorLoop(int error)
   }
 }
 
-void postexitRequest()
+void postenterHTTP()
 {
-  if (!client.connect(server, 80))
+  if (WiFi.status() == WL_CONNECTED)
   {
-    Serial.println("Connection failed.");
+  HTTPClient http;
+  http.begin("http://backend-env.xzz7reypjg.us-west-1.elasticbeanstalk.com/register_event");
+  http.addHeader("Content-Type", "text/plain");
+  int httpEnter = http.POST("{\"eventType\" : \"enter\", \"deviceID\" : 4}");
+  Serial.println(httpEnter);
+  Serial.println("{\"eventType\" : \"enter\", \"deviceID\" : 4}");
+  http.end();
   }
-  else
-  {
-  client.println("Post /register_event HTTP\1.1");
-  client.println("Host: http://backend-env.xzz7reypjg.us-west-1.elasticbeanstalk.com");
-  client.println("Connection: close\n");
-  client.println("Content-Type: text/html\r");
-  client.println("Connection: close\r\n\r");
-  client.println("<!DOCTYPE HTML>\r");
-  client.println("<html>\r");
-  client.println("\"eventType\" : \"exit\",");
-  client.println("\"deviceID\" : 4");
-  client.println("</html>");
-  Serial.println("Request Sent");
-  }
-  client.stop();
 }
 
-void postenterRequest()
+void postexitHTTP()
 {
-    if (!client.connect(server, 80))
+  if (WiFi.status() == WL_CONNECTED)
   {
-    Serial.println("Connection failed.");
-  }
-  else
-  {
-  client.println("Post /register_event HTTP\1.1");
-  client.println("Host: http://backend-env.xzz7reypjg.us-west-1.elasticbeanstalk.com");
-  client.println("Connection: close\n");
-  client.println("Content-Type: text/html\r");
-  client.println("Connection: close\r\n\r");
-  client.println("<!DOCTYPE HTML>\r");
-  client.println("<html>\r");
-  client.println("\"eventType\" : \"enter\",");
-  client.println("\"deviceID\" : 4");
-  client.println("</html>");
-  Serial.println("Request Sent");
+  HTTPClient http;
+  http.begin("http://backend-env.xzz7reypjg.us-west-1.elasticbeanstalk.com/register_event");
+  http.addHeader("Content-Type", "text/plain");
+  int httpExit = http.POST("{\"eventType\" : \"exit\", \"deviceID\" : 4}");
+  Serial.println(httpExit);
+  Serial.println("{\"eventType\" : \"exit\", \"deviceID\" : 4}");
+  http.end();
   }
 }
 
 void setup() 
 {
+ delay(500);
  pinMode(D3, INPUT);
  pinMode(D2, INPUT);
  pinMode(D8, OUTPUT);
@@ -134,21 +118,23 @@ void loop()
   if (oldvalA && !newvalA)
   {
     Serial.println("enter");
-    postenterRequest();
+    postenterHTTP();
     while (!digitalRead(D3) || !digitalRead(D2))
     {
       yield();
     }
+    delay(700);
   }
   
   else if (oldvalB && !newvalB)
   {
     Serial.println("exit");
-    postexitRequest();
+    postexitHTTP();
     while (!digitalRead(D3) || !digitalRead(D2))
     {
       yield();
     }
+    delay(700);
   }
   oldvalA = newvalA;
   oldvalB = newvalB;
