@@ -26,6 +26,9 @@ int oldvalA;
 int oldvalB;
 int newvalA;
 int newvalB;
+int enterCount;
+int exitCount;
+int requestCount;
 
 
 void errorLoop(int error)
@@ -75,6 +78,9 @@ void setup()
  pinMode(D8, OUTPUT);
  oldvalA = digitalRead(D3);
  oldvalB = digitalRead(D2);
+ enterCount = 0;
+ exitCount = 0;
+ requestCount = 0;
 
  Serial.begin(115200);
  while (!Serial);
@@ -118,24 +124,46 @@ void loop()
   if (oldvalA && !newvalA)
   {
     Serial.println("enter");
-    postenterHTTP();
+    enterCount++;
     while (!digitalRead(D3) || !digitalRead(D2))
     {
       yield();
     }
-    delay(700);
+    delay(400);
   }
   
   else if (oldvalB && !newvalB)
   {
     Serial.println("exit");
-    postexitHTTP();
+    exitCount++;
     while (!digitalRead(D3) || !digitalRead(D2))
     {
       yield();
     }
-    delay(700);
+    delay(400);
+  }
+  else
+  {
+    requestCount++;
+  }
+  if (requestCount >= 200 && enterCount > 0)
+  {
+    postenterHTTP();
+    enterCount--;
+    requestCount = 0;
+  }
+  else if (requestCount >= 200 && exitCount > 0)
+  {
+    postexitHTTP();
+    exitCount--;
+    requestCount = 0;
+  }
+  else if (requestCount >=500)
+  {
+    requestCount = 200;
   }
   oldvalA = newvalA;
   oldvalB = newvalB;
+  Serial.println(requestCount);
+  delay(10);
 }
