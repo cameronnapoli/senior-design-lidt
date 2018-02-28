@@ -1,0 +1,40 @@
+﻿<div class="wrapper">
+    <nav class="navbar navbar-dark bg-dark" ng-class="{'active' : vm.isCollapsed}" id="sidebar">
+            <button ng-if="vm.isCollapsed" class="navbar-toggler" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <button ng-if="!vm.isCollapsed" class="navbar-toggler ml-sm-auto chevron-left" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
+                <span class="fa fa-chevron-left"></span>
+            </button>
+        <ul class="nav nav-bar-nav components">
+            <li class="nav-item">
+                <a href="#">
+                    <i class="fa fa-home"></i>
+                    {{vm.isCollapsed ? '' : 'Device Dashboard'}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#reports" data-toggle="collapse" aria-expanded="false">
+                    <i class="fa fa-list-ol"></i>
+                    {{vm.isCollapsed ? '' : 'Reports'}}
+                </a>
+                <ul class="collapse list-unstyled" id="reports">
+                    <li><a href="#">Page 1</a></li>
+                    <li><a href="#">Page 2</a></li>
+                    <li><a href="#">Page 3</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#charts" data-toggle="collapse" aria-expanded="false">
+                    <i class="fa fa-line-chart"></i>
+                    {{vm.isCollapsed ? '' : 'Charts'}}
+                </a>
+                <ul class="collapse list-unstyled" id="charts">
+                    <li><a ui-sref="{{::vm.routeStateConst.BAR_CHART}}">Bar Chart</a></li>
+                    <li><a ui-sref="{{::vm.routeStateConst.LINE_CHART}}">Line Chart</a></li>
+                    <li><a ui-sref="{{::vm.routeStateConst.PIE_CHART}}">Pie Chart</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
