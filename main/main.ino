@@ -16,9 +16,7 @@
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 
-WiFiClient client;
 const char server[] = "http://backend-env.xzz7reypjg.us-west-1.elasticbeanstalk.com";
-unsigned int timeout = 40;
 //D2 = sensorA (entry)
 //D1 = sensorB (exit)
 //D8 = WiFi LED
@@ -29,8 +27,10 @@ int newvalA;
 int newvalB;
 int entryCount;
 int exitCount;
-int requestCount;
-
+unsigned int requestCount;
+unsigned int sleepCount;
+unsigned int time_in_us = 18e8;
+unsigned int time_in_min;
 
 void errorLoop(int error)
 {
@@ -40,6 +40,42 @@ void errorLoop(int error)
   for (;;)
   {
     delay(5);
+  }
+}
+
+void deepsleep()
+{
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    HTTPClient http;
+    http.begin("http://jsonplaceholder.typicode.com/users/1");
+    int httpCode = http.GET();
+    if (httpCode > 0)
+    {
+     String payloadString = http.getString();
+     Serial.print("Business Hours: ");
+     Serial.println(payloadString);
+     http.end();
+     char payload[payloadString.length()+1];
+     payloadString.toCharArray(payload, payloadString.length()+1);
+     if (strcmp(payload, "OFF") == 0)
+      {
+        time_in_min = time_in_us / 60e6;
+        Serial.print("Going to Sleep for ");
+        Serial.print(time_in_min);
+        Serial.println(" minutes.");
+        ESP.deepSleep(time_in_us);
+      }
+     else if (strcmp(payload, "OFF") != 0)
+     {
+      Serial.println("Business hours is on.");
+     }
+    }
+    sleepCount = 0;
+  }
+    else
+  {
+    Serial.println("Error with WiFi Connection");
   }
 }
 
@@ -94,17 +130,19 @@ void setup()
  oldvalB = digitalRead(D1);
 
  Serial.begin(115200);
- while (!Serial);
  
  WiFiManager wifiManager;
  wifiManager.autoConnect("LIDTdevice1");
-
+ delay(50);
+ 
  digitalWrite(D5, HIGH);
-  while (!digitalRead(D1) || !digitalRead(D2))
+ deepsleep();
+ 
+ while (!digitalRead(D1) || !digitalRead(D2))
  {
   yield();
  } 
- delay(50);
+
   Serial.println("Ready to Count!");
  }
 
@@ -143,6 +181,7 @@ void loop()
   else
   {
     requestCount++;
+    sleepCount++;
   }
   if (requestCount >= 200 && entryCount > 0)
   {
@@ -154,12 +193,15 @@ void loop()
     postexitHTTP();
     requestCount = 0;
   }
+  else if( sleepCount >= 18e5 && entryCount == 0 && exitCount == 0)
+  {
+    deepsleep();
+  }
   else if (requestCount >=500)
   {
     requestCount = 200;
   }
   oldvalA = newvalA;
   oldvalB = newvalB;
-  Serial.println(requestCount);
   delay(10);
 }
