@@ -6,8 +6,12 @@
             controllerAs: 'vm',
             controller: Controller,
             bindings: {
-                DeviceId: '@',
-                Count: '='
+                IsMaster: '<',
+                DeviceId: '@?',
+
+                EntryCount: '=?',
+                ExitCount: '=?',
+                OccupantCount: '=?'
             }
         });
 
@@ -16,17 +20,21 @@
     function Controller(DataService)
     {
         var vm = this;
-        vm.count = 0;
         vm.refresh = refresh;
 
         (function _init() {
-            //refresh();
+            if (!(vm.EntryCount && vm.ExitCount && vm.OccupantCount))
+            {
+                refresh();
+            }
         });
 
         function refresh() {
             DataService.GetDeviceCount(vm.DeviceId)
-                .then(function (count) {
-                    vm.count = count;
+                .then(function (data) {
+                    vm.entryCount = data.EntryCount;
+                    vm.exitCount = data.ExitCount;
+                    vm.occupiedCount = data.OccupiedCount;
                 });
         }
     }
