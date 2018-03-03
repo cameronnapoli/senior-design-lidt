@@ -1,13 +1,23 @@
 body {
-  overflow-y: hidden; }
+  overflow: hidden; }
 
 .page-wrapper {
   width: 100vw;
-  overflow-y: hidden; }
+  height: 100vh; }
 
 .main-content-wrapper {
-  padding-top: 15px;
-  padding-bottom: 15px; }
+  display: inline-block;
+  max-height: calc(100vh - 56px);
+  height: calc(100vh - 56px);
+  padding: 15px;
+  overflow-y: auto; }
+
+.main-content-wrapper-expand {
+  max-width: calc(100vw - 85px); }
+
+.main-content-wrapper-retract {
+  max-width: 88vw;
+  width: 88vw; }
 
 card-container li {
   float: left;
@@ -22,9 +32,6 @@ card-container li {
 
 .nav-link {
   cursor: pointer; }
-
-.dropdown.nav-link {
-  padding: 0; }
 
 /* Shrinking the sidebar from 250px to 80px and center aligining its content*/
 #sidebar.active {
@@ -113,6 +120,17 @@ card-container li {
     -webkit-transform: translateX(50%);
             transform: translateX(50%); } }
 
+.side-navbar {
+  display: inline-block;
+  max-width: 11.77vw;
+  width: 500px; }
+
+.side-navbar-expand {
+  max-width: 11.77vw; }
+
+.side-navbar-retract {
+  max-width: 80px; }
+
 #sidebar.active > .navbar-toggler {
   font-size: 0.9em; }
 
@@ -120,14 +138,19 @@ card-container li {
   font-size: 2.6em; }
 
 #sidebar {
-  padding-bottom: 100vh; }
+  padding-bottom: 100vh;
+  position: absolute;
+  max-width: 12vw; }
   #sidebar > .navbar-toggler {
     font-size: 1em; }
   #sidebar .nav-item {
-    width: 100%;
+    width: 100vw;
     height: 3em; }
     #sidebar .nav-item .fa {
       font-size: 1.5em; }
 
 .chevron-left {
   border: none; }
+
+.stay-left {
+  width: 1px; }

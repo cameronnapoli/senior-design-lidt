@@ -9,7 +9,8 @@
             LINE_CHART: 'line_chart',
             BAR_CHART: 'bar_chart',
             PIE_CHART: 'pie_chart',
-            ABOUT: 'about'
+            ABOUT: 'about',
+            SCHEDULE: 'schedule'
         }
     }
 })();

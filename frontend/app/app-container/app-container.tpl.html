@@ -1,0 +1,8 @@
+﻿<div class="page-wrapper">
+    <top-navbar></top-navbar>
+    <side-navbar on-callback="vm.toggleMainContent"></side-navbar>
+    <div class="side-navbar" ng-class="{'side-navbar-expand': !vm.isExpanded, 'side-navbar-retract': vm.isExpanded}">hidden</div>
+    <div class="main-content-wrapper" ng-class="{'main-content-wrapper-expand': vm.isExpanded, 'main-content-wrapper-retract': !vm.isExpanded}">
+        <div ui-view></div>
+    </div>
+</div>

@@ -4,7 +4,10 @@
         .component('sideNavbar', {
             templateUrl: 'navbar/side/side-navbar.tpl.html',
             controllerAs: 'vm',
-            controller: Controller
+            controller: Controller,
+            bindings: {
+                onCallback: '<?'
+            }
         });
 
     Controller.$inject = ['routeStateConst']
@@ -16,5 +19,11 @@
         vm.isReportsCollapsed = true;
         vm.isGraphsCollapsed = true;
         vm.routeStateConst = routeStateConst;
+        vm.onToggleHide = onToggleHide;
+
+        function onToggleHide() {
+            vm.isCollapsed = !vm.isCollapsed;
+            vm.onCallback();
+        }
     }
 })();

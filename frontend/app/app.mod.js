@@ -8,6 +8,7 @@
         //vendors
         'ui.bootstrap',
         'ui.router',
+        'ui.calendar',
         'chart.js'
     ]);
 })();

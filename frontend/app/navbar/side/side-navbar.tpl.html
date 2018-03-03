@@ -1,12 +1,11 @@
-﻿<div class="wrapper">
-    <nav class="navbar navbar-dark bg-dark" ng-class="{'active' : vm.isCollapsed}" id="sidebar">
-            <button ng-if="vm.isCollapsed" class="navbar-toggler" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
+﻿    <nav class="navbar navbar-dark bg-dark" ng-class="{'active' : vm.isCollapsed}" id="sidebar">
+            <button ng-if="vm.isCollapsed" class="navbar-toggler" type="button" ng-click="vm.onToggleHide()">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <button ng-if="!vm.isCollapsed" class="navbar-toggler ml-sm-auto chevron-left" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
+            <button ng-if="!vm.isCollapsed" class="navbar-toggler ml-sm-auto chevron-left" type="button" ng-click="vm.onToggleHide()">
                 <span class="fa fa-chevron-left"></span>
             </button>
-        <ul class="nav nav-bar-nav components">
+        <ul class="nav nav-bar-nav components" ng-class="{'stay-left' : vm.isCollapsed}">
             <li class="nav-item">
                 <a href="#">
                     <i class="fa fa-home"></i>
@@ -37,4 +36,3 @@
             </li>
         </ul>
     </nav>
-</div>

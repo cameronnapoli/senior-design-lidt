@@ -18,6 +18,14 @@
             .otherwise('/Dashboard');
 
         $stateProvider
+            .state(routeStateConst.ABOUT, {
+                url: '/Dashboard',
+                template: '<card-container />'
+            })
+            .state(routeStateConst.SCHEDULE, {
+                url: '/Schedule',
+                template: '<calendar />'
+            })
             .state(routeStateConst.DASHBOARD, {
                 url: '/Dashboard',
                 template: '<card-container />'
