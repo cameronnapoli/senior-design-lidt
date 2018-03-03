@@ -10,9 +10,9 @@
             }
         });
 
-    Controller.$inject = ['DataService']
+    Controller.$inject = ['dataService']
 
-    function Controller(DataService)
+    function Controller(dataService)
     {
         var vm = this;
         vm.refresh = refresh;
@@ -22,7 +22,7 @@
         })();
 
         function refresh() {
-            //DataService.GetDeviceCount(vm.deviceId)
+            //dataService.GetDeviceCount(vm.deviceId)
             //    .then(function (data) {
             //    });
             vm.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];

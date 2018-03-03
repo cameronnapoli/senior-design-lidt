@@ -1,11 +1,11 @@
 ﻿(function () {
     'use strict';
     angular.module('lidt')
-        .factory('DataResource', DataResource);
+        .factory('dataResource', dataResource);
 
-    DataResource.$inject = ['$resource'];
+    dataResource.$inject = ['$resource'];
 
-    function DataResource($resource)
+    function dataResource($resource)
     {
         var apiUrl = '';
         return $resource(apiUrl, null, {

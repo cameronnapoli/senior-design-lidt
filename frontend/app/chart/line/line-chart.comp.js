@@ -10,46 +10,63 @@
             }
         });
 
-    Controller.$inject = ['DataService']
+    Controller.$inject = ['dataService', 'chartLabelConst']
 
-    function Controller(DataService)
+    function Controller(dataService, chartLabelConst)
     {
         var vm = this;
-        vm.refresh = refresh;
+        //vm.refresh = refresh;
 
         (function _init() {
-            refresh();
-        })();
-
-        function refresh() {
-            //DataService.GetDeviceCount(vm.deviceId)
-            //    .then(function (data) {
-            //    });
-            vm.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-            vm.data = [
-                [65, 59, 80, 81, 56, 55, 40],
-                [28, 48, 40, 19, 86, 27, 90]
-            ];
-            vm.series = ['Series A', 'Series B'];
-            vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+            vm.labels = chartLabelConst.HOUR;
+            vm.data = [[65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80],
+                [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90, 28, 48, 40]];
+            vm.series = ['Device 1', 'Device 2'];
             vm.options = {
                 scales: {
-                    yAxes: [
-                        {
-                            id: 'y-axis-1',
-                            type: 'linear',
-                            display: true,
-                            position: 'left'
-                        },
-                        {
-                            id: 'y-axis-2',
-                            type: 'linear',
-                            display: true,
-                            position: 'right'
-                        }
-                    ]
+                    xAxes: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    },
+                    yAxes: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    }
                 }
             };
-        }
+        })();
+
+        //function refresh() {
+        //    dataService.GetAllDeviceCount()
+        //        .then(function (data) {
+        //            vm.labels
+        //            data.map(function (device) {
+        //                device.
+        //            });
+        //        });
+
+        //}
+
+        //function onChangeTimeframe(option) {
+        //    switch (option.mode)
+        //    {
+        //        case '5 minute':    vm.
+        //            break;
+        //        case '15 minute':
+        //            break;
+        //        case '30 minute':
+        //            break;
+        //        case '1 hr':
+        //            break;
+        //        case '6 hr':
+        //            break;
+        //        case '1 day':
+        //            break;
+        //        case '30 day':
+        //            break;
+        //    }
+        //}
     }
 })();

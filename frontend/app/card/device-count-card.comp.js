@@ -15,9 +15,9 @@
             }
         });
 
-    Controller.$inject = ['DataService']
+    Controller.$inject = ['dataService']
 
-    function Controller(DataService)
+    function Controller(dataService)
     {
         var vm = this;
         vm.refresh = refresh;
@@ -30,11 +30,11 @@
         });
 
         function refresh() {
-            DataService.GetDeviceCount(vm.DeviceId)
+            dataService.GetDeviceCount(vm.DeviceId)
                 .then(function (data) {
-                    vm.entryCount = data.EntryCount;
-                    vm.exitCount = data.ExitCount;
-                    vm.occupiedCount = data.OccupiedCount;
+                    vm.EntryCount = data.EntryCount;
+                    vm.ExitCount = data.ExitCount;
+                    vm.OccupantCount = data.OccupantCount;
                 });
         }
     }

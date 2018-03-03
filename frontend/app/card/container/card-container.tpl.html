@@ -1,6 +1,8 @@
 ﻿<ul class="card-container list-unstyled">
     <li ng-repeat="device in vm.devices">
         <device-count-card device-id="{{device.ID}}"
-                           count="5"></device-count-card>
+                           entry-count="device.EntryCount"
+                           exit-count="device.ExitCount"
+                           occupied-count="device.OcuupiedCount"></device-count-card>
     </li>
 </ul>

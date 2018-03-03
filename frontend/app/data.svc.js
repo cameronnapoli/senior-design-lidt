@@ -1,15 +1,16 @@
 ﻿(function () {
     'use strict';
     angular.module('lidt')
-        .factory('DataService', DataService);
+        .factory('dataService', dataService);
 
-    DataService.$inject = ['$q', 'DataResource'];
+    dataService.$inject = ['$q', 'dataResource'];
 
-    function DataService($q, DataResource)
+    function dataService($q, DataResource)
     {
         return {
             GetAllClientDevices: GetAllClientDevices,
-            GetDeviceCount: GetDeviceCount
+            GetDeviceCount: GetDeviceCount,
+            GetAllDeviceCount: GetAllDeviceCount
         }
 
         function GetAllClientDevices(clientId) {
@@ -27,8 +28,19 @@
             deferred = $q.defer();
 
             DataResource.GetDeviceCount(deviceId).$promise
-                .then(function (count) {
-                    deferred.resolve(count);
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function GetAllDeviceCount() {
+            deferred = $q.defer();
+
+            DataResource.GetAllDeviceCount().$promise
+                .then(function (data) {
+                    deferred.resolve(data);
                 });
 
             return deferred.promise;

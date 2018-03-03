@@ -7,23 +7,16 @@
             controller: Controller
         });
 
-    Controller.$inject = ['DataService']
+    Controller.$inject = ['routeStateConst']
 
-    function Controller(DataService) {
+    function Controller(routeStateConst) {
         var vm = this;
-        vm.devices = [];
         vm.isCollapsed = true;
+        vm.routeStateConst = routeStateConst;
 
         (function _init() {
-            //DataService.GetAllClientDevices(clientId)
-            //    .then(function (devices) {
-            //        vm.devices = devices;
-            //    });
-        })();
 
-        function onSelect(device) {
-            vm.devices.push(device);
-        }
+        })();
 
         function logout()
         {

@@ -7,20 +7,30 @@
             controller: Controller
         });
 
-    Controller.$inject = ['DataService']
+    Controller.$inject = ['dataService']
 
-    function Controller(DataService) {
+    function Controller(dataService) {
         var vm = this;
         vm.devices = [];
+        vm.totalEntryCount = 0;
+        vm.totalExitCount = 0;
+        vm.totalOccupantCount = 0;
+        vm.refreshAll = refreshAll;
 
         (function _init() {
-            vm.devices.push({ ID: "a" });
-            vm.devices.push({ ID: "b" });
-            vm.devices.push({ ID: "c" });
+            refreshAll();
         })();
 
-        function addDevice(deviceId) {
-            vm.devices.push(deviceId);
+        function refreshAll() {
+            dataService.getAllDeviceCount()
+                .then(function (data) {
+                    vm.devices = data;
+                    vm.devices.map(function (device) {
+                        vm.totalEntryCount += device.EntryCount;
+                        vm.totalExitCount += device.ExitCount;
+                        vm.totalOccupantCount += device.OccupantCount;
+                    });
+                });
         }
     }
 })();
