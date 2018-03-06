@@ -27,6 +27,12 @@ card-container li {
   width: 31em;
   text-align: center; }
 
+.carousel-inner {
+  background-color: lightskyblue; }
+
+.carousel-item {
+  text-align: center; }
+
 .navbar-left {
   height: 100vw; }
 
@@ -122,11 +128,10 @@ card-container li {
 
 .side-navbar {
   display: inline-block;
-  max-width: 11.77vw;
   width: 500px; }
 
 .side-navbar-expand {
-  max-width: 11.77vw; }
+  max-width: 11.70vw; }
 
 .side-navbar-retract {
   max-width: 80px; }

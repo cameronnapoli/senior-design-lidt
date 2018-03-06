@@ -6,7 +6,7 @@
         'lidt.templates',
 
         //vendors
-        'ui.bootstrap',
+        //'ui.bootstrap',
         'ui.router',
         'ui.calendar',
         'chart.js'

@@ -11,7 +11,7 @@
     files = {
         cssImport: [
             node + '/bootstrap/dist/css/bootstrap.min.css',
-            node + '/angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
+            //node + '/angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
             node + '/font-awesome/css/font-awesome.min.css',
             node + '/fullcalendar/dist/fullcalendar.min.css'
         ],
@@ -26,7 +26,7 @@
             node + '/angular/angular.js',
             node + '/@uirouter/angularjs/release/angular-ui-router.min.js',
             node + '/angular-animate/angular-animate.js',
-            node + '/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+            //node + '/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
             node + '/angular-resource/angular-resource.min.js',
             node + '/angular-chart.js/dist/angular-chart.min.js',
             node + '/angular-ui-calendar/src/calendar.js',

@@ -20,7 +20,7 @@
         $stateProvider
             .state(routeStateConst.ABOUT, {
                 url: '/About',
-                template: '<card-container />'
+                template: '<carousel />'
             })
             .state(routeStateConst.SCHEDULE, {
                 url: '/Schedule',
