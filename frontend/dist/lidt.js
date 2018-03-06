@@ -45,11 +45,11 @@
         routeStateConst)
     {
         $urlRouterProvider
-            .otherwise('/Dashboard');
+            .otherwise('');
 
         $stateProvider
             .state(routeStateConst.ABOUT, {
-                url: '/Dashboard',
+                url: '/About',
                 template: '<card-container />'
             })
             .state(routeStateConst.SCHEDULE, {
@@ -208,6 +208,48 @@
 (function () {
     'use strict';
     angular.module('lidt')
+        .component('deviceCountCard', {
+            templateUrl: 'card/device-count-card.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+                isMaster: '<',
+                deviceId: '@?',
+
+                entryCount: '=?',
+                exitCount: '=?',
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService)
+    {
+        var vm = this;
+        vm.refresh = refresh;
+        vm.occupantCount = 0;
+
+        (function _init() {
+            if (!(vm.entryCount && vm.exitCount && vm.occupantCount))
+            {
+                refresh();
+            }
+        });
+
+        function refresh() {
+            dataService.GetDeviceCount(vm.DeviceId)
+                .then(function (data) {
+                    vm.entryCount = data.EntryCount;
+                    vm.exitCount = data.ExitCount;
+                    vm.OccupantCount = vm.EntryCount - vm.ExitCount;
+                });
+        }
+    }
+})();
+
+(function () {
+    'use strict';
+    angular.module('lidt')
         .constant('chartLabelConst', chartLabelConst());
 
     function chartLabelConst() {
@@ -224,40 +266,48 @@
 (function () {
     'use strict';
     angular.module('lidt')
-        .component('deviceCountCard', {
-            templateUrl: 'card/device-count-card.tpl.html',
+        .component('cardContainer', {
+            templateUrl: 'card/container/card-container.tpl.html',
             controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-                IsMaster: '<',
-                DeviceId: '@?',
-
-                EntryCount: '=?',
-                ExitCount: '=?',
-                OccupantCount: '=?'
-            }
+            controller: Controller
         });
 
     Controller.$inject = ['dataService']
 
-    function Controller(dataService)
-    {
+    function Controller(dataService) {
         var vm = this;
-        vm.refresh = refresh;
+        vm.devices = [];
+        vm.totalEntryCount = 0;
+        vm.totalExitCount = 0;
+        vm.totalOccupantCount = 0;
+        vm.totalAvailableCount = 0;
+        vm.refreshAll = refreshAll;
 
         (function _init() {
-            if (!(vm.EntryCount && vm.ExitCount && vm.OccupantCount))
-            {
-                refresh();
-            }
-        });
+            //refreshAll();
+            vm.devices.push({ ID: 'a', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'b', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'c', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'd', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'e', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'f', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'g', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'h', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'j', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'k', EntryCount: 5, ExitCount: 5});
+            vm.devices.push({ ID: 'l', EntryCount: 5, ExitCount: 5});
+        })();
 
-        function refresh() {
-            dataService.GetDeviceCount(vm.DeviceId)
+        function refreshAll() {
+            dataService.getAllDeviceCount()
                 .then(function (data) {
-                    vm.EntryCount = data.EntryCount;
-                    vm.ExitCount = data.ExitCount;
-                    vm.OccupantCount = data.OccupantCount;
+                    vm.devices = data.devices;
+                    vm.devices.map(function (device) {
+                        vm.totalEntryCount += device.EntryCount;
+                        vm.totalExitCount += device.ExitCount;
+                    });
+                    vm.totalOcuupantCount = vm.totalEntryCount - vm.totalExitCount;
+                    vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
                 });
         }
     }
@@ -267,61 +317,6 @@
     angular.module('lidt')
         .component('barChart', {
             templateUrl: 'chart/bar/bar-chart.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-                Id: '@'
-            }
-        });
-
-    Controller.$inject = ['dataService']
-
-    function Controller(dataService)
-    {
-        var vm = this;
-        vm.refresh = refresh;
-
-        (function _init() {
-            refresh();
-        })();
-
-        function refresh() {
-            //dataService.GetDeviceCount(vm.deviceId)
-            //    .then(function (data) {
-            //    });
-            vm.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-            vm.data = [
-                [65, 59, 80, 81, 56, 55, 40],
-                [28, 48, 40, 19, 86, 27, 90]
-            ];
-            vm.series = ['Series A', 'Series B'];
-            vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-            vm.options = {
-                scales: {
-                    yAxes: [
-                        {
-                            id: 'y-axis-1',
-                            type: 'linear',
-                            display: true,
-                            position: 'left'
-                        },
-                        {
-                            id: 'y-axis-2',
-                            type: 'linear',
-                            display: true,
-                            position: 'right'
-                        }
-                    ]
-                }
-            };
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('pieChart', {
-            templateUrl: 'chart/pie/pie-chart.tpl.html',
             controllerAs: 'vm',
             controller: Controller,
             bindings: {
@@ -465,36 +460,55 @@
 (function () {
     'use strict';
     angular.module('lidt')
-        .component('cardContainer', {
-            templateUrl: 'card/container/card-container.tpl.html',
+        .component('pieChart', {
+            templateUrl: 'chart/pie/pie-chart.tpl.html',
             controllerAs: 'vm',
-            controller: Controller
+            controller: Controller,
+            bindings: {
+                Id: '@'
+            }
         });
 
     Controller.$inject = ['dataService']
 
-    function Controller(dataService) {
+    function Controller(dataService)
+    {
         var vm = this;
-        vm.devices = [];
-        vm.totalEntryCount = 0;
-        vm.totalExitCount = 0;
-        vm.totalOccupantCount = 0;
-        vm.refreshAll = refreshAll;
+        vm.refresh = refresh;
 
         (function _init() {
-            refreshAll();
+            refresh();
         })();
 
-        function refreshAll() {
-            dataService.getAllDeviceCount()
-                .then(function (data) {
-                    vm.devices = data;
-                    vm.devices.map(function (device) {
-                        vm.totalEntryCount += device.EntryCount;
-                        vm.totalExitCount += device.ExitCount;
-                        vm.totalOccupantCount += device.OccupantCount;
-                    });
-                });
+        function refresh() {
+            //dataService.GetDeviceCount(vm.deviceId)
+            //    .then(function (data) {
+            //    });
+            vm.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+            vm.data = [
+                [65, 59, 80, 81, 56, 55, 40],
+                [28, 48, 40, 19, 86, 27, 90]
+            ];
+            vm.series = ['Series A', 'Series B'];
+            vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+            vm.options = {
+                scales: {
+                    yAxes: [
+                        {
+                            id: 'y-axis-1',
+                            type: 'linear',
+                            display: true,
+                            position: 'left'
+                        },
+                        {
+                            id: 'y-axis-2',
+                            type: 'linear',
+                            display: true,
+                            position: 'right'
+                        }
+                    ]
+                }
+            };
         }
     }
 })();

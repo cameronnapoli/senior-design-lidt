@@ -15,11 +15,11 @@
         routeStateConst)
     {
         $urlRouterProvider
-            .otherwise('/Dashboard');
+            .otherwise('');
 
         $stateProvider
             .state(routeStateConst.ABOUT, {
-                url: '/Dashboard',
+                url: '/About',
                 template: '<card-container />'
             })
             .state(routeStateConst.SCHEDULE, {
