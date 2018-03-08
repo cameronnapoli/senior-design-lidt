@@ -177,6 +177,37 @@
 (function () {
     'use strict';
     angular.module('lidt')
+        .component('calendar', {
+            templateUrl: 'calendar/calendar.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller
+        });
+
+    Controller.$inject = ['$scope', 'dataService']
+
+    function Controller($scope, dataService) {
+        var vm = this;
+        vm.eventSources = [];
+
+        (function _init() {
+            vm.calendar = {
+                height: 800,
+                editable: true,
+                header: {
+                    left: 'month basicWeek basicDay agendaWeek agendaDay',
+                    center: 'title',
+                    right: 'today prev,next'
+                },
+                eventClick: $scope.alertEventOnClick,
+                eventDrop: $scope.alertOnDrop,
+                eventResize: $scope.alertOnResize
+            }
+        })();
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
         .component('deviceCountCard', {
             templateUrl: 'card/device-count-card.tpl.html',
             controllerAs: 'vm',
@@ -239,49 +270,18 @@
                 id: 0,
                 name: 'Jeremy Quintana',
                 major: 'Electrical Engineering Major',
-                img: 'static/Images/Jeremy.jpg'
+                img: 'static/Images/Jeremy.JPG'
             }, {
                 id: 1,
                 name: 'Jeremy Quintana',
                 major: 'Computer Science and Engineering Major',
-                img: 'static/Images/Cameron.jpg'
+                img: 'static/Images/Cameron.JPG'
             }, {
                 id: 2,
                 name: 'Raymond Wang',
                 major: 'Computer Science and Engineering Major',
-                img: 'static/Images/Raymond.jpg'
+                img: 'static/Images/Raymond.JPG'
             }]
-        })();
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('calendar', {
-            templateUrl: 'calendar/calendar.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller
-        });
-
-    Controller.$inject = ['$scope', 'dataService']
-
-    function Controller($scope, dataService) {
-        var vm = this;
-        vm.eventSources = [];
-
-        (function _init() {
-            vm.calendar = {
-                height: 800,
-                editable: true,
-                header: {
-                    left: 'month basicWeek basicDay agendaWeek agendaDay',
-                    center: 'title',
-                    right: 'today prev,next'
-                },
-                eventClick: $scope.alertEventOnClick,
-                eventDrop: $scope.alertOnDrop,
-                eventResize: $scope.alertOnResize
-            }
         })();
     }
 })();
@@ -553,32 +553,6 @@
 (function () {
     'use strict';
     angular.module('lidt')
-        .component('topNavbar', {
-            templateUrl: 'navbar/top/top-navbar.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller
-        });
-
-    Controller.$inject = ['routeStateConst']
-
-    function Controller(routeStateConst) {
-        var vm = this;
-        vm.isCollapsed = true;
-        vm.routeStateConst = routeStateConst;
-
-        (function _init() {
-
-        })();
-
-        function logout()
-        {
-
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
         .component('sideNavbar', {
             templateUrl: 'navbar/side/side-navbar.tpl.html',
             controllerAs: 'vm',
@@ -602,6 +576,32 @@
         function onToggleHide() {
             vm.isCollapsed = !vm.isCollapsed;
             vm.onCallback();
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('topNavbar', {
+            templateUrl: 'navbar/top/top-navbar.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller
+        });
+
+    Controller.$inject = ['routeStateConst']
+
+    function Controller(routeStateConst) {
+        var vm = this;
+        vm.isCollapsed = true;
+        vm.routeStateConst = routeStateConst;
+
+        (function _init() {
+
+        })();
+
+        function logout()
+        {
+
         }
     }
 })();
