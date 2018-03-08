@@ -22,17 +22,17 @@
                 id: 0,
                 name: 'Jeremy Quintana',
                 major: 'Electrical Engineering Major',
-                img: 'static/Images/Jeremy.jpg'
+                img: 'static/Images/Jeremy.JPG'
             }, {
                 id: 1,
                 name: 'Jeremy Quintana',
                 major: 'Computer Science and Engineering Major',
-                img: 'static/Images/Cameron.jpg'
+                img: 'static/Images/Cameron.JPG'
             }, {
                 id: 2,
                 name: 'Raymond Wang',
                 major: 'Computer Science and Engineering Major',
-                img: 'static/Images/Raymond.jpg'
+                img: 'static/Images/Raymond.JPG'
             }]
         })();
     }
