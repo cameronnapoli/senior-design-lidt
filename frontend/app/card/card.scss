@@ -1,0 +1,25 @@
+﻿card-container {
+    li {
+        float: left;
+        margin: 0px 10px 10px 10px;
+    }
+}
+
+content-card {
+    width: 82.7%;
+    height: 50%;
+}
+
+.card {
+    height: 100%;
+    text-align: center;
+    border-radius: 0;
+}
+
+.left-content-card {
+    float: right;
+}
+
+.right-content-card {
+    float: left;
+}

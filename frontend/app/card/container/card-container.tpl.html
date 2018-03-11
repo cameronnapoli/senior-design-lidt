@@ -1,0 +1,19 @@
+﻿<div class="jumbotron">
+    <h1 class="display-4">Hello {{vm.userName}}</h1>
+    <p class="lead">This is the current total count for your devices</p>
+    <hr class="my-4">
+    <p>Entry: {{vm.totalEntryCount}}</p>
+    <p>Exit: {{vm.totalExitCount}}</p>
+    <p>Occpupants: {{vm.totalOccupantCount}}</p>
+    <p>Available: {{vm.totalAvailableCount}}</p>
+    <a href="#" ng-click="vm.refreshAll()">
+        <span class="fa fa-refresh"></span>
+    </a>
+</div>
+<ul class="card-container list-unstyled">
+    <li ng-repeat="device in vm.devices">
+        <device-count-card device-id="{{device.ID}}"
+                           entry-count="device.EntryCount"
+                           exit-count="device.ExitCount"></device-count-card>
+    </li>
+</ul>
