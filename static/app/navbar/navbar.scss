@@ -17,4 +17,19 @@
 
 .nav-item {
     font-size: 1.2em;
+
+    & .dropdown-menu {
+        margin: 7px 0 0 6px;
+        background-color: #343a40;
+        border-radius: unset;
+
+        .dropdown-item {
+            color: gray;
+
+            &:hover {
+                background-color: gray;
+                color: white;
+            }
+        }
+    }
 }

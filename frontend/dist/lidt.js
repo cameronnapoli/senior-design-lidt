@@ -25,7 +25,9 @@
             BAR_CHART: 'bar_chart',
             PIE_CHART: 'pie_chart',
             ABOUT: 'about',
-            SCHEDULE: 'schedule'
+            SCHEDULE: 'schedule',
+            REGISTER_DEVICE: 'register_device',
+            REGISTER_USER: 'register_user'
         }
     }
 })();
@@ -63,15 +65,23 @@
             })
             .state(routeStateConst.BAR_CHART, {
                 url: '/Chart/BarChart',
-                template: "<bar-chart id='first'></line-chart>"
+                template: "<bar-chart />"
             })
             .state(routeStateConst.LINE_CHART, {
                 url: '/Chart/LineChart',
-                template: "<line-chart id='first'></line-chart>"
+                template: "<line-chart />"
             })
             .state(routeStateConst.PIE_CHART, {
                 url: '/Chart/PieChart',
-                template: "<pie-chart id='first'></line-chart>"
+                template: "<pie-chart />"
+            })
+            .state(routeStateConst.REGISTER_DEVICE, {
+                url: '/Register/Device',
+                template: "<register-device-form />"
+            })
+            .state(routeStateConst.REGISTER_USER, {
+                url: '/Register/User',
+                template: "<register-user-form />"
             })
     }
 })();
@@ -272,54 +282,6 @@
 (function () {
     'use strict';
     angular.module('lidt')
-        .component('carousel', {
-            templateUrl: 'carousel/carousel.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-                id: '@'
-            }
-        });
-
-    Controller.$inject = ['$scope']
-
-    function Controller($scope)
-    {
-        var vm = this;
-        vm.indicator = 0;
-
-        (function _init() {
-            vm.members = [{
-                id: 0,
-                name: 'Jeremy Quintana (Team Leader)',
-                major: 'Electrical Engineering (Circuit Design)',
-                img: '../Images/Jeremy.jpg',
-                skills: 'Circuit network analysis, IC design using Cadence Virtuoso ADE, electronics soldering and fabrication, C programming',
-                experience: 'Designed the schematic and layout of integrated circuit chips.',
-                role: 'Team captain, hardware design, and presenter.'
-            }, {
-                id: 1,
-                name: 'Cameron Napoli',
-                major: 'Computer Science and Engineering',
-                img: '../Images/Cameron.jpg',
-                skills: 'Backend development with Python, PHP, or Go. Database development with SQL and NoSQL style. Embedded device programming in C.',
-                experience: 'Created backend systems in Python for work. Designed and implemented database systems.',
-                role: 'Backend developer, support for embedded programming, and presenter.'
-            }, {
-                id: 2,
-                name: 'Raymond Wang',
-                major: 'Computer Science and Engineering',
-                img: '../Images/Raymond.jpg',
-                skills: 'Database development using SQL, NoSQL. Backend development using C, C++, C#, Java, LISP, Prolog, PHP. Frontend development using Javascript, HTML, CSS.',
-                experience: '.NET 4.7, Entity Framework, NServiceBus, SignalR, Amazon AWS, Microsoft Azure, MSSQL, MySQL, Tomcat, Jersey, AngularJS v1.x, jQuery, Kendo, Bootstrap.',
-                role: 'Software development, hardware software integration, presenter.'
-            }]
-        })();
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
         .component('contentCard', {
             templateUrl: 'card/card.tpl.html',
             controllerAs: 'vm',
@@ -330,9 +292,9 @@
             }
         });
 
-    Controller.$inject = ['dataService']
+    Controller.$inject = []
 
-    function Controller(dataService) {
+    function Controller() {
         var vm = this;
     }
 })();
@@ -375,6 +337,54 @@
                     vm.OccupantCount = vm.EntryCount - vm.ExitCount;
                 });
         }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('carousel', {
+            templateUrl: 'carousel/carousel.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+                id: '@'
+            }
+        });
+
+    Controller.$inject = ['$scope']
+
+    function Controller($scope)
+    {
+        var vm = this;
+        vm.indicator = 0;
+
+        (function _init() {
+            vm.members = [{
+                id: 0,
+                name: 'Jeremy Quintana',
+                major: 'Electrical Engineering (Circuit Design)',
+                img: '../Images/Jeremy.jpg',
+                skills: 'Circuit network analysis, IC design using Cadence Virtuoso ADE, electronics soldering and fabrication, C programming',
+                experience: 'Designed the schematic and layout of integrated circuit chips.',
+                role: 'Team captain, hardware design, and presenter.'
+            }, {
+                id: 1,
+                name: 'Cameron Napoli',
+                major: 'Computer Science and Engineering',
+                img: '../Images/Cameron.jpg',
+                skills: 'Backend development with Python, PHP, or Go. Database development with SQL and NoSQL style. Embedded device programming in C.',
+                experience: 'Created backend systems in Python for work. Designed and implemented database systems.',
+                role: 'Backend developer, support for embedded programming, and presenter.'
+            }, {
+                id: 2,
+                name: 'Raymond Wang',
+                major: 'Computer Science and Engineering',
+                img: '../Images/Raymond.jpg',
+                skills: 'Database development using SQL, NoSQL. Backend development using C, C++, C#, Java, LISP, Prolog, PHP. Frontend development using Javascript, HTML, CSS.',
+                experience: '.NET 4.7, Entity Framework, NServiceBus, SignalR, Amazon AWS, Microsoft Azure, MSSQL, MySQL, Tomcat, Jersey, AngularJS v1.x, jQuery, Kendo, Bootstrap.',
+                role: 'Software development, hardware software integration, presenter.'
+            }]
+        })();
     }
 })();
 (function () {
@@ -639,6 +649,60 @@
                     ]
                 }
             };
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerDeviceForm', {
+            templateUrl: 'form/register-device/register-device-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerUserForm', {
+            templateUrl: 'form/register-user/register-user-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
         }
     }
 })();

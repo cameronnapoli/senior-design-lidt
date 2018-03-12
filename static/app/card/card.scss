@@ -23,3 +23,19 @@ content-card {
 .right-content-card {
     float: left;
 }
+
+.card-text {
+    font-size: 1.1em;
+}
+
+@media (max-width: 1280px) {
+    .card-text {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 1024px) {
+    .card-text {
+        font-size: 0.9em;
+    }
+}

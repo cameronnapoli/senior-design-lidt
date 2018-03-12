@@ -20,7 +20,7 @@
         (function _init() {
             vm.members = [{
                 id: 0,
-                name: 'Jeremy Quintana (Team Leader)',
+                name: 'Jeremy Quintana',
                 major: 'Electrical Engineering (Circuit Design)',
                 img: '../Images/Jeremy.jpg',
                 skills: 'Circuit network analysis, IC design using Cadence Virtuoso ADE, electronics soldering and fabrication, C programming',

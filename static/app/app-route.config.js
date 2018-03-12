@@ -32,15 +32,23 @@
             })
             .state(routeStateConst.BAR_CHART, {
                 url: '/Chart/BarChart',
-                template: "<bar-chart id='first'></line-chart>"
+                template: "<bar-chart />"
             })
             .state(routeStateConst.LINE_CHART, {
                 url: '/Chart/LineChart',
-                template: "<line-chart id='first'></line-chart>"
+                template: "<line-chart />"
             })
             .state(routeStateConst.PIE_CHART, {
                 url: '/Chart/PieChart',
-                template: "<pie-chart id='first'></line-chart>"
+                template: "<pie-chart />"
+            })
+            .state(routeStateConst.REGISTER_DEVICE, {
+                url: '/Register/Device',
+                template: "<register-device-form />"
+            })
+            .state(routeStateConst.REGISTER_USER, {
+                url: '/Register/User',
+                template: "<register-user-form />"
             })
     }
 })();

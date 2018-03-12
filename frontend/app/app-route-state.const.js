@@ -10,7 +10,9 @@
             BAR_CHART: 'bar_chart',
             PIE_CHART: 'pie_chart',
             ABOUT: 'about',
-            SCHEDULE: 'schedule'
+            SCHEDULE: 'schedule',
+            REGISTER_DEVICE: 'register_device',
+            REGISTER_USER: 'register_user'
         }
     }
 })();

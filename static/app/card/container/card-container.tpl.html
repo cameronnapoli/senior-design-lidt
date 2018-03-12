@@ -1,14 +1,20 @@
 ﻿<div class="jumbotron">
-    <h1 class="display-4">Hello {{vm.userName}}</h1>
-    <p class="lead">This is the current total count for your devices</p>
-    <hr class="my-4">
-    <p>Entry: {{vm.totalEntryCount}}</p>
-    <p>Exit: {{vm.totalExitCount}}</p>
-    <p>Occpupants: {{vm.totalOccupantCount}}</p>
-    <p>Available: {{vm.totalAvailableCount}}</p>
-    <span ng-click="vm.refreshAll()">
+    <a href="#" class="pull-right" ng-click="vm.refreshAll()">
         <span class="fa fa-refresh"></span>
-    </span>
+    </a>
+    <h1 class="">Hello {{vm.userName}}</h1>
+    <p class="lead">Welcome to your LIDT system dashboard.</p>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Total Entry Count: {{vm.totalEntryCount}}</h4>
+            <h4>Total Exit Count: {{vm.totalExitCount}}</h4>
+        </div>
+        <div class="col-md-6">
+            <h4>Current Occpupants: {{vm.totalOccupantCount}}</h4>
+            <h4>Current Capacity: {{vm.totalAvailableCount}}</h4>
+        </div>
+    </div>
 </div>
 <ul class="card-container list-unstyled">
     <li ng-repeat="device in vm.devices">

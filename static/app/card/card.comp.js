@@ -11,9 +11,9 @@
             }
         });
 
-    Controller.$inject = ['dataService']
+    Controller.$inject = []
 
-    function Controller(dataService) {
+    function Controller() {
         var vm = this;
     }
 })();
