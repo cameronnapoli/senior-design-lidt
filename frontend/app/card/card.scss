@@ -1,7 +1,16 @@
 ﻿card-container {
     li {
         float: left;
-        margin: 0px 10px 10px 10px;
+        width: 24.25%;
+        margin: 0 1% 1% 0;
+    }
+
+    li:last-child {
+        margin: 0 0 1% 0;
+    }
+
+    device-count-card .card {
+        border-radius: 3px;
     }
 }
 
