@@ -22,7 +22,7 @@
                 id: 0,
                 name: 'Jeremy Quintana',
                 major: 'Electrical Engineering (Circuit Design)',
-                img: '../Images/Jeremy.JPG',
+                img: '../static/Images/Jeremy.JPG',
                 skills: 'Circuit network analysis, IC design using Cadence Virtuoso ADE, electronics soldering and fabrication, C programming',
                 experience: 'Designed the schematic and layout of integrated circuit chips.',
                 role: 'Team captain, hardware design, and presenter.'
@@ -30,7 +30,7 @@
                 id: 1,
                 name: 'Cameron Napoli',
                 major: 'Computer Science and Engineering',
-                img: '../Images/Cameron.JPG',
+                img: '../static/Images/Cameron.JPG',
                 skills: 'Backend development with Python, PHP, or Go. Database development with SQL and NoSQL style. Embedded device programming in C.',
                 experience: 'Created backend systems in Python for work. Designed and implemented database systems.',
                 role: 'Backend developer, support for embedded programming, and presenter.'
@@ -38,7 +38,7 @@
                 id: 2,
                 name: 'Raymond Wang',
                 major: 'Computer Science and Engineering',
-                img: '../Images/Raymond.JPG',
+                img: '../static/Images/Raymond.JPG',
                 skills: 'Database development using SQL, NoSQL. Backend development using C, C++, C#, Java, LISP, Prolog, PHP. Frontend development using Javascript, HTML, CSS.',
                 experience: '.NET 4.7, Entity Framework, NServiceBus, SignalR, Amazon AWS, Microsoft Azure, MSSQL, MySQL, Tomcat, Jersey, AngularJS v1.x, jQuery, Kendo, Bootstrap.',
                 role: 'Software development, hardware software integration, presenter.'
