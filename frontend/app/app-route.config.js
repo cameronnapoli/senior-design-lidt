@@ -15,7 +15,7 @@
         routeStateConst)
     {
         $urlRouterProvider
-            .otherwise('/Dashboard');
+            .otherwise('');
 
         $stateProvider
             .state(routeStateConst.ABOUT, {
