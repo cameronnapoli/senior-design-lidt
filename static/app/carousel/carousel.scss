@@ -1,7 +1,16 @@
-﻿.carousel-inner {
-    background-color: lightskyblue;
+﻿.carousel-inner img {
+    width: 100%;
 }
 
 .carousel-item{
     text-align: center;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+    background-color: lightgrey;
+}
+
+.no-padding {
+    padding: 0;
 }

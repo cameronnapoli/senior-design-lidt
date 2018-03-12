@@ -9,6 +9,7 @@
         //'ui.bootstrap',
         'ui.router',
         'ui.calendar',
-        'chart.js'
+        'chart.js',
+        'toastr'
     ]);
 })();

@@ -9,9 +9,9 @@
     {
         var apiUrl = 'http://backend-env.us-west-1.elasticbeanstalk.com/';
         return $resource(apiUrl, null, {
-            getAllDeviceCounts: {
+            getAllClientDevices: {
                 method: 'GET',
-                url: apiUrl + 'GetAllDeviceCounts',
+                url: apiUrl + 'GetAllClientDevices',
                 params: {
                     clientId: '@clientId'
                 },

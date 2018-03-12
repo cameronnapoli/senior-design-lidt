@@ -7,17 +7,31 @@ body {
 
 .main-content-wrapper {
   display: inline-block;
-  max-height: calc(100vh - 56px);
-  height: calc(100vh - 56px);
+  max-height: calc(100% - 56px);
+  height: calc(100% - 56px);
   padding: 15px;
   overflow-y: auto; }
 
-.main-content-wrapper-expand {
-  max-width: calc(100% - 85px); }
-
 .main-content-wrapper-retract {
-  max-width: 87%;
-  width: 87%; }
+  max-width: calc(100% - 250px);
+  width: calc(100% - 250px); }
+
+.main-content-wrapper-expand {
+  max-width: calc(100% - 80px);
+  width: calc(100% - 80px); }
+
+.carousel-inner img {
+  width: 100%; }
+
+.carousel-item {
+  text-align: center; }
+
+.carousel-control-prev, .carousel-control-next {
+  width: 5%;
+  background-color: lightgrey; }
+
+.no-padding {
+  padding: 0; }
 
 card-container li {
   float: left;
@@ -37,19 +51,6 @@ content-card {
 
 .right-content-card {
   float: left; }
-
-.carousel-inner img {
-  width: 100%; }
-
-.carousel-item {
-  text-align: center; }
-
-.carousel-control-prev, .carousel-control-next {
-  width: 5%;
-  background-color: lightgrey; }
-
-.no-padding {
-  padding: 0; }
 
 .navbar-left {
   height: 100%; }
@@ -159,10 +160,10 @@ content-card {
   width: 500px; }
 
 .side-navbar-expand {
-  max-width: 12.77%; }
+  max-width: 245px; }
 
 .side-navbar-retract {
-  max-width: 80px; }
+  max-width: 75px; }
 
 #sidebar.active > .navbar-toggler {
   font-size: 0.9em; }
@@ -175,7 +176,7 @@ content-card {
 #sidebar {
   padding: 0 0 100% 0;
   position: absolute;
-  max-width: 13%; }
+  max-width: 250px; }
   #sidebar > .navbar-toggler {
     font-size: 1em; }
   #sidebar .nav-item {

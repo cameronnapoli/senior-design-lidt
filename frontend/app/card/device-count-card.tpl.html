@@ -1,6 +1,9 @@
 ﻿<div class="card">
     <div class="card-body">
         <p class="card-title">Device {{::vm.deviceId}}</p>
+        <span ng-click="vm.refresh(vm.deviceId)">
+            <span class="fa fa-refresh"></span>
+        </span>
         <hr>
         <h5 class="card-text">Entry: {{vm.entryCount}}</h5>
         <h5 class="card-text">Exit: {{vm.exitCount}}</h5>

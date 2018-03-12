@@ -20,7 +20,7 @@
 
         (function _init() {
             vm.labels = chartLabelConst.HOUR;
-            //dataService.getAllHourlyCount()
+            //dataService.GetAllDeviceCountHistory(clientId, interval, startTime, endTime, month)
             //    .then(function (data) {
             //        data.map(function (device)
             //        {

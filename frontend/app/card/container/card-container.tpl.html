@@ -6,9 +6,9 @@
     <p>Exit: {{vm.totalExitCount}}</p>
     <p>Occpupants: {{vm.totalOccupantCount}}</p>
     <p>Available: {{vm.totalAvailableCount}}</p>
-    <a href="#" ng-click="vm.refreshAll()">
+    <span ng-click="vm.refreshAll()">
         <span class="fa fa-refresh"></span>
-    </a>
+    </span>
 </div>
 <ul class="card-container list-unstyled">
     <li ng-repeat="device in vm.devices">

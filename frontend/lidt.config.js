@@ -13,7 +13,8 @@
             node + '/bootstrap/dist/css/bootstrap.min.css',
             //node + '/angular-ui-bootstrap/dist/ui-bootstrap-csp.css',
             node + '/font-awesome/css/font-awesome.min.css',
-            node + '/fullcalendar/dist/fullcalendar.min.css'
+            node + '/fullcalendar/dist/fullcalendar.min.css',
+            node + '/angular-toastr/dist/angular-toastr.min.css'
         ],
         jsImport: [
             node + '/jquery/dist/jquery.min.js',
@@ -30,6 +31,7 @@
             node + '/angular-resource/angular-resource.min.js',
             node + '/angular-chart.js/dist/angular-chart.min.js',
             node + '/angular-ui-calendar/src/calendar.js',
+            node + '/angular-toastr/dist/angular-toastr.tpls.min.js'
             //node + '/bootstrap-daterangepicker/daterangepicker.js',
         ],
         templates: app + '/**/*.tpl.html',

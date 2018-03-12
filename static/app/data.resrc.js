@@ -7,7 +7,7 @@
 
     function dataResource($resource)
     {
-        var apiUrl = '';
+        var apiUrl = 'http://backend-env.us-west-1.elasticbeanstalk.com/';
         return $resource(apiUrl, null, {
             getAllClientDevices: {
                 method: 'GET',
@@ -22,6 +22,35 @@
                 url: apiUrl + 'GetDeviceCount',
                 params: {
                     deviceId: '@deviceId'
+                },
+                cache: true
+            },
+            getAllDeviceCountHistory: {
+                method: 'GET',
+                url: apiUrl + 'GetAllDeviceCountHistory',
+                params: {
+                    deviceId: '@deviceId',
+                    interval: '@interval',
+                    startTime: '@startTime',
+                    endTime: '@endTime',
+                    month: '@month'
+                },
+                cache: true
+            },
+            addDevice: {
+                method: 'POST',
+                url: apiUrl + 'AddDevice',
+                params: {
+                    deviceId: '@deviceId'
+                },
+                cache: true
+            },
+            addUser: {
+                method: 'POST',
+                url: apiUrl + 'AddUser',
+                params: {
+                    clientId: '@clientId',
+                    user: '@user'
                 },
                 cache: true
             }

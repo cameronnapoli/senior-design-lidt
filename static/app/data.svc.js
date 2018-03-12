@@ -3,44 +3,78 @@
     angular.module('lidt')
         .factory('dataService', dataService);
 
-    dataService.$inject = ['$q', 'dataResource'];
+    dataService.$inject = ['$q', 'dataResource', 'toastr'];
 
-    function dataService($q, DataResource)
+    function dataService($q, dataResource, toastr)
     {
         return {
-            GetAllClientDevices: GetAllClientDevices,
-            GetDeviceCount: GetDeviceCount,
-            GetAllDeviceCount: GetAllDeviceCount
+            getAllClientDevices: getAllClientDevices,
+            getDeviceCount: getDeviceCount,
+            getAllDeviceCountHistory: getAllDeviceCountHistory,
+            addDevice: addDevice,
+            addUser : addUser
         }
 
-        function GetAllClientDevices(clientId) {
-            deferred = $q.defer();
+        function getAllClientDevices(clientId) {
+            var deferred = $q.defer();
 
-            DataResource.getAllClientDevices(clientId).$promise
-                .then(function (devices) {
-                    deferred.resolve(devices);
+            dataResource.getAllClientDevices({ clientId: clientId }).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (error) {
+                    toastr.error('Something went wrong', 'ERROR');
                 });
 
             return deferred.promise;
         }
 
-        function GetDeviceCount(deviceId) {
-            deferred = $q.defer();
+        function getDeviceCount(deviceId) {
+            var deferred = $q.defer();
 
-            DataResource.GetDeviceCount(deviceId).$promise
+            dataResource.getDeviceCount({ deviceId: deviceId }).$promise
                 .then(function (data) {
                     deferred.resolve(data);
+                }, function (error) {
+                    toastr.error('Something went wrong', 'ERROR');
                 });
 
             return deferred.promise;
         }
 
-        function GetAllDeviceCount() {
-            deferred = $q.defer();
+        function getAllDeviceCountHistory(clientId) {
+            var deferred = $q.defer();
 
-            DataResource.GetAllDeviceCount().$promise
+            dataResource.getAllDeviceCountHistory({ clientId: clientId }).$promise
                 .then(function (data) {
                     deferred.resolve(data);
+                }, function (error) {
+                    toastr.error('Something went wrong', 'ERROR');
+                });
+
+            return deferred.promise;
+        }
+
+        function addDevice(device) {
+            var deferred = $q.defer();
+
+            dataResource.addDevice({ device: device }).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (error) {
+                    toastr.error('Something went wrong', 'ERROR');
+                });
+
+            return deferred.promise;
+        }
+
+        function addUser(user) {
+            var deferred = $q.defer();
+
+            dataResource.addUser({ user: user }).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                }, function (error) {
+                    toastr.error('Something went wrong', 'ERROR');
                 });
 
             return deferred.promise;
