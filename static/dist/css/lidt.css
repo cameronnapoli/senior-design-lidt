@@ -229,6 +229,8 @@ input {
   #sidebar ul.list-unstyled {
     text-align: left;
     padding: 15px 0 0 15px; }
+    #sidebar ul.list-unstyled li:hover {
+      color: white; }
 
 .chevron-left {
   border: none; }

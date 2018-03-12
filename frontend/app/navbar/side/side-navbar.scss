@@ -167,6 +167,10 @@
     ul.list-unstyled {
         text-align: left;
         padding: 15px 0 0 15px;
+
+        li:hover {
+            color: white;
+        }
     }
 }
 
