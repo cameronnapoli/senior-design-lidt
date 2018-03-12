@@ -34,7 +34,7 @@
         })();
 
         function refreshAll() {
-            dataService.getAllDeviceCounts()
+            dataService.getAllDeviceCounts(1)
                 .then(function (data) {
                     vm.devices = data;
                     vm.devices.map(function (device) {

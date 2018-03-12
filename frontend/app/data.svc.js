@@ -5,29 +5,20 @@
 
     dataService.$inject = ['$q', 'dataResource'];
 
-    function dataService($q, DataResource)
+    function dataService($q, dataResource)
     {
         return {
-            GetAllClientDevices: GetAllClientDevices,
-            GetDeviceCount: GetDeviceCount,
-            GetAllDeviceCount: GetAllDeviceCount
+            getAllDeviceCounts: getAllDeviceCounts,
+            getDeviceCount: getDeviceCount,
+            getAllDeviceCountHistory: getAllDeviceCountHistory,
+            addDevice: addDevice,
+            addUser : addUser
         }
 
-        function GetAllClientDevices(clientId) {
-            deferred = $q.defer();
+        function getAllDeviceCounts(clientId) {
+            var deferred = $q.defer();
 
-            DataResource.getAllClientDevices(clientId).$promise
-                .then(function (devices) {
-                    deferred.resolve(devices);
-                });
-
-            return deferred.promise;
-        }
-
-        function GetDeviceCount(deviceId) {
-            deferred = $q.defer();
-
-            DataResource.GetDeviceCount(deviceId).$promise
+            dataResource.getAllDeviceCounts(clientId).$promise
                 .then(function (data) {
                     deferred.resolve(data);
                 });
@@ -35,10 +26,43 @@
             return deferred.promise;
         }
 
-        function GetAllDeviceCount() {
-            deferred = $q.defer();
+        function getDeviceCount(deviceId) {
+            var deferred = $q.defer();
 
-            DataResource.GetAllDeviceCount().$promise
+            dataResource.getDeviceCount(deviceId).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function getAllDeviceCountHistory(clientId) {
+            var deferred = $q.defer();
+
+            dataResource.getAllDeviceCountHistory(clientId).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function addDevice(device) {
+            var deferred = $q.defer();
+
+            dataResource.addDevice(device).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function addUser(user) {
+            var deferred = $q.defer();
+
+            dataResource.addUser(user).$promise
                 .then(function (data) {
                     deferred.resolve(data);
                 });

@@ -13,31 +13,59 @@ body {
   overflow-y: auto; }
 
 .main-content-wrapper-expand {
-  max-width: calc(100vw - 85px); }
+  max-width: calc(100% - 85px); }
 
 .main-content-wrapper-retract {
-  max-width: 88vw;
-  width: 88vw; }
+  max-width: 87%;
+  width: 87%; }
 
 card-container li {
   float: left;
   margin: 0px 10px 10px 10px; }
 
-.card {
-  width: 31em;
-  text-align: center; }
+content-card {
+  width: 82.7%;
+  height: 50%; }
 
-.carousel-inner {
-  background-color: lightskyblue; }
+.card {
+  height: 100%;
+  text-align: center;
+  border-radius: 0; }
+
+.left-content-card {
+  float: right; }
+
+.right-content-card {
+  float: left; }
+
+.carousel-inner img {
+  width: 100%; }
 
 .carousel-item {
   text-align: center; }
 
+.carousel-control-prev, .carousel-control-next {
+  width: 5%;
+  background-color: lightgrey; }
+
+.no-padding {
+  padding: 0; }
+
 .navbar-left {
-  height: 100vw; }
+  height: 100%; }
 
 .nav-link {
   cursor: pointer; }
+
+.navbar-brand {
+  font-size: 0.8em;
+  line-height: 2.2em; }
+
+.acronym, .nav-item {
+  font-size: 2em; }
+
+.nav-item {
+  font-size: 1.2em; }
 
 /* Shrinking the sidebar from 250px to 80px and center aligining its content*/
 #sidebar.active {
@@ -59,7 +87,7 @@ card-container li {
   text-align: left; }
 
 #sidebar.active ul li a {
-  padding: 20px 10px;
+  /*padding: 20px 10px;*/
   text-align: center;
   font-size: 0.85em; }
 
@@ -106,7 +134,7 @@ card-container li {
     display: block; }
   /* Downsize the navigation links font size */
   #sidebar.active ul li a {
-    padding: 20px 10px;
+    /*padding: 20px 10px;*/
     font-size: 0.85em; }
   #sidebar.active ul li a i {
     margin-right: 0;
@@ -131,7 +159,7 @@ card-container li {
   width: 500px; }
 
 .side-navbar-expand {
-  max-width: 11.70vw; }
+  max-width: 12.77%; }
 
 .side-navbar-retract {
   max-width: 80px; }
@@ -139,23 +167,38 @@ card-container li {
 #sidebar.active > .navbar-toggler {
   font-size: 0.9em; }
 
-#sidebar.active .nav-item .fa {
-  font-size: 2.6em; }
+#sidebar.active .nav-item {
+  height: 80px; }
+  #sidebar.active .nav-item .fa {
+    font-size: 2.6em; }
 
 #sidebar {
-  padding-bottom: 100vh;
+  padding: 0 0 100% 0;
   position: absolute;
-  max-width: 12vw; }
+  max-width: 13%; }
   #sidebar > .navbar-toggler {
     font-size: 1em; }
   #sidebar .nav-item {
-    width: 100vw;
-    height: 3em; }
+    width: 100%;
+    height: 3em;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    padding: 15px; }
+    #sidebar .nav-item:hover {
+      background-color: gray; }
     #sidebar .nav-item .fa {
-      font-size: 1.5em; }
+      color: white;
+      font-size: 1em; }
+  #sidebar ul.list-unstyled {
+    text-align: left;
+    padding: 15px 0 0 15px; }
 
 .chevron-left {
   border: none; }
 
 .stay-left {
-  width: 1px; }
+  width: 100%;
+  margin-top: 15px; }
+
+.navbar-toggler:active {
+  outline: none; }

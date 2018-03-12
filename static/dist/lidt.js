@@ -83,11 +83,11 @@
 
     function dataResource($resource)
     {
-        var apiUrl = '';
+        var apiUrl = 'http://backend-env.us-west-1.elasticbeanstalk.com/';
         return $resource(apiUrl, null, {
-            getAllClientDevices: {
+            getAllDeviceCounts: {
                 method: 'GET',
-                url: apiUrl + 'GetAllClientDevices',
+                url: apiUrl + 'GetAllDeviceCounts',
                 params: {
                     clientId: '@clientId'
                 },
@@ -98,6 +98,35 @@
                 url: apiUrl + 'GetDeviceCount',
                 params: {
                     deviceId: '@deviceId'
+                },
+                cache: true
+            },
+            getAllDeviceCountHistory: {
+                method: 'GET',
+                url: apiUrl + 'GetAllDeviceCountHistory',
+                params: {
+                    deviceId: '@deviceId',
+                    interval: '@interval',
+                    startTime: '@startTime',
+                    endTime: '@endTime',
+                    month: '@month'
+                },
+                cache: true
+            },
+            addDevice: {
+                method: 'POST',
+                url: apiUrl + 'AddDevice',
+                params: {
+                    deviceId: '@deviceId'
+                },
+                cache: true
+            },
+            addUser: {
+                method: 'POST',
+                url: apiUrl + 'AddUser',
+                params: {
+                    clientId: '@clientId',
+                    user: '@user'
                 },
                 cache: true
             }
@@ -111,29 +140,20 @@
 
     dataService.$inject = ['$q', 'dataResource'];
 
-    function dataService($q, DataResource)
+    function dataService($q, dataResource)
     {
         return {
-            GetAllClientDevices: GetAllClientDevices,
-            GetDeviceCount: GetDeviceCount,
-            GetAllDeviceCount: GetAllDeviceCount
+            getAllDeviceCounts: getAllDeviceCounts,
+            getDeviceCount: getDeviceCount,
+            getAllDeviceCountHistory: getAllDeviceCountHistory,
+            addDevice: addDevice,
+            addUser : addUser
         }
 
-        function GetAllClientDevices(clientId) {
-            deferred = $q.defer();
+        function getAllDeviceCounts(clientId) {
+            var deferred = $q.defer();
 
-            DataResource.getAllClientDevices(clientId).$promise
-                .then(function (devices) {
-                    deferred.resolve(devices);
-                });
-
-            return deferred.promise;
-        }
-
-        function GetDeviceCount(deviceId) {
-            deferred = $q.defer();
-
-            DataResource.GetDeviceCount(deviceId).$promise
+            dataResource.getAllDeviceCounts(clientId).$promise
                 .then(function (data) {
                     deferred.resolve(data);
                 });
@@ -141,10 +161,43 @@
             return deferred.promise;
         }
 
-        function GetAllDeviceCount() {
-            deferred = $q.defer();
+        function getDeviceCount(deviceId) {
+            var deferred = $q.defer();
 
-            DataResource.GetAllDeviceCount().$promise
+            dataResource.getDeviceCount(deviceId).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function getAllDeviceCountHistory(clientId) {
+            var deferred = $q.defer();
+
+            dataResource.getAllDeviceCountHistory(clientId).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function addDevice(device) {
+            var deferred = $q.defer();
+
+            dataResource.addDevice(device).$promise
+                .then(function (data) {
+                    deferred.resolve(data);
+                });
+
+            return deferred.promise;
+        }
+
+        function addUser(user) {
+            var deferred = $q.defer();
+
+            dataResource.addUser(user).$promise
                 .then(function (data) {
                     deferred.resolve(data);
                 });
@@ -203,6 +256,25 @@
                 eventResize: $scope.alertOnResize
             }
         })();
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('contentCard', {
+            templateUrl: 'card/card.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+                title: '@',
+                text: '@'
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
     }
 })();
 (function () {
@@ -268,19 +340,28 @@
         (function _init() {
             vm.members = [{
                 id: 0,
-                name: 'Jeremy Quintana',
-                major: 'Electrical Engineering Major',
-                img: 'static/Images/Jeremy.JPG'
+                name: 'Jeremy Quintana (Team Leader)',
+                major: 'Electrical Engineering (Circuit Design)',
+                img: '../Images/Jeremy.jpg',
+                skills: 'Circuit network analysis, IC design using Cadence Virtuoso ADE, electronics soldering and fabrication, C programming',
+                experience: 'Designed the schematic and layout of integrated circuit chips.',
+                role: 'Team captain, hardware design, and presenter.'
             }, {
                 id: 1,
-                name: 'Jeremy Quintana',
-                major: 'Computer Science and Engineering Major',
-                img: 'static/Images/Cameron.JPG'
+                name: 'Cameron Napoli',
+                major: 'Computer Science and Engineering',
+                img: '../Images/Cameron.jpg',
+                skills: 'Backend development with Python, PHP, or Go. Database development with SQL and NoSQL style. Embedded device programming in C.',
+                experience: 'Created backend systems in Python for work. Designed and implemented database systems.',
+                role: 'Backend developer, support for embedded programming, and presenter.'
             }, {
                 id: 2,
                 name: 'Raymond Wang',
-                major: 'Computer Science and Engineering Major',
-                img: 'static/Images/Raymond.JPG'
+                major: 'Computer Science and Engineering',
+                img: '../Images/Raymond.jpg',
+                skills: 'Database development using SQL, NoSQL. Backend development using C, C++, C#, Java, LISP, Prolog, PHP. Frontend development using Javascript, HTML, CSS.',
+                experience: '.NET 4.7, Entity Framework, NServiceBus, SignalR, Amazon AWS, Microsoft Azure, MSSQL, MySQL, Tomcat, Jersey, AngularJS v1.x, jQuery, Kendo, Bootstrap.',
+                role: 'Software development, hardware software integration, presenter.'
             }]
         })();
     }
@@ -322,24 +403,24 @@
         vm.refreshAll = refreshAll;
 
         (function _init() {
-            //refreshAll();
-            vm.devices.push({ ID: 'a', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'b', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'c', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'd', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'e', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'f', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'g', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'h', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'j', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'k', EntryCount: 5, ExitCount: 5});
-            vm.devices.push({ ID: 'l', EntryCount: 5, ExitCount: 5});
+            refreshAll();
+            //vm.devices.push({ ID: 'a', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'b', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'c', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'd', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'e', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'f', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'g', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'h', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'j', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'k', EntryCount: 5, ExitCount: 5});
+            //vm.devices.push({ ID: 'l', EntryCount: 5, ExitCount: 5});
         })();
 
         function refreshAll() {
-            dataService.getAllDeviceCount()
+            dataService.getAllDeviceCounts(1)
                 .then(function (data) {
-                    vm.devices = data.devices;
+                    vm.devices = data;
                     vm.devices.map(function (device) {
                         vm.totalEntryCount += device.EntryCount;
                         vm.totalExitCount += device.ExitCount;
@@ -445,7 +526,7 @@
 
         (function _init() {
             vm.labels = chartLabelConst.HOUR;
-            //dataService.getAllHourlyCount()
+            //dataService.GetAllDeviceCountHistory(clientId, interval, startTime, endTime, month)
             //    .then(function (data) {
             //        data.map(function (device)
             //        {
@@ -568,13 +649,20 @@
         var vm = this;
         vm.isCollapsed = false;
         vm.dashboard = true;
-        vm.isReportsCollapsed = true;
-        vm.isGraphsCollapsed = true;
+        vm.isExpanded = false;
+
+        vm.barLink = 'Bar Chart';
+        vm.lineLink = 'Line Chart';
+        vm.pieLink = 'Pie Chart';
+
         vm.routeStateConst = routeStateConst;
         vm.onToggleHide = onToggleHide;
 
         function onToggleHide() {
             vm.isCollapsed = !vm.isCollapsed;
+            vm.barLink = vm.isCollapsed ? 'Bar' : 'Bar Chart';
+            vm.lineLink = vm.isCollapsed ? 'Line' : 'Line Chart';
+            vm.pieLink = vm.isCollapsed ? 'Pie' : 'Pie Chart';
             vm.onCallback();
         }
     }

@@ -7,7 +7,7 @@
 
     function dataResource($resource)
     {
-        var apiUrl = 'http://backend-env.xzz7reypjg.us-west-1.elasticbeanstalk.com/';
+        var apiUrl = 'http://backend-env.us-west-1.elasticbeanstalk.com/';
         return $resource(apiUrl, null, {
             getAllDeviceCounts: {
                 method: 'GET',

@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS Client (
     ContactEmail NVARCHAR(256)	NOT NULL,
     ContactPhone NVARCHAR(10)	NOT NULL,
     TimeZoneID NVARCHAR(32) 	NOT NULL REFERENCES Industry(IndustryID),
+	TotalCapacitiy INT			NOT NULL,
     CONSTRAINT UX_Client UNIQUE KEY (Name, ContactName)
 );
 
