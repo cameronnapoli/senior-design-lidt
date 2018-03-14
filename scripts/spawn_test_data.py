@@ -98,10 +98,7 @@ def sql_insert(sql_str, params=None):
     try:
         conn = mdb.connect(*creds) # unpack creds into params
         cursor = conn.cursor()
-        if params:
-            cursor.execute(sql_str, params)
-        else:
-            cursor.execute(sql_str)
+        cursor.execute(sql_str, params)
         conn.commit()
     except mdb.Error, e:
         err_str = "SQL INSERT Error %d: %s" % (e.args[0],e.args[1])
