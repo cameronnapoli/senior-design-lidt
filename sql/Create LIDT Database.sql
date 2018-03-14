@@ -60,11 +60,12 @@ CREATE TABLE IF NOT EXISTS Device (
     CONSTRAINT UX_Device UNIQUE KEY (MACAddress)
 );
 
+-- TODO: Need to change EventType to string
 CREATE TABLE DeviceEvents (
 	DeviceID NVARCHAR(36),
 	CreatedDate DATETIME NOT NULL DEFAULT NOW(),
 	EventType ENUM('entry', 'exit'),
-	PRIMARY KEY(DeviceID)
+	PRIMARY KEY(DeviceID, CreatedDate)
 );
 
 CREATE TABLE IF NOT EXISTS ClientBusinessHours (
