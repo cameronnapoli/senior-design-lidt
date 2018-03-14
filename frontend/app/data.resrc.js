@@ -15,6 +15,7 @@
                 params: {
                     clientId: '@clientId'
                 },
+                isArray: true,
                 cache: true
             },
             getDeviceCount: {
@@ -23,6 +24,7 @@
                 params: {
                     deviceId: '@deviceId'
                 },
+                isArray: true,
                 cache: true
             },
             getAllDeviceCountHistory: {

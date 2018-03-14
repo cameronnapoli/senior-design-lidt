@@ -102,6 +102,7 @@
                 params: {
                     clientId: '@clientId'
                 },
+                isArray: true,
                 cache: true
             },
             getDeviceCount: {
@@ -110,6 +111,7 @@
                 params: {
                     deviceId: '@deviceId'
                 },
+                isArray: true,
                 cache: true
             },
             getAllDeviceCountHistory: {
@@ -330,28 +332,12 @@
         });
 
         function refresh() {
-            dataService.GetDeviceCount(vm.DeviceId)
-                .then(function (data) {
-                    vm.entryCount = data.EntryCount;
-                    vm.exitCount = data.ExitCount;
-                    vm.OccupantCount = vm.EntryCount - vm.ExitCount;
+            dataService.getDeviceCount(vm.deviceId)
+                .then(function (device) {
+                    vm.entryCount = device[0].Entries;
+                    vm.exitCount = device[0].Exits;
+                    vm.OccupantCount = vm.entryCount - vm.exitCount;
                 });
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .constant('chartLabelConst', chartLabelConst());
-
-    function chartLabelConst() {
-        return {
-            HOUR: ['12:00am', '01:00am', '02:00am', '03:00am', '04:00am', '05:00am', '06:00am', '07:00am', '08:00am', '09:00am', '10:00am', '11:00am'
-                , '12:00pm', '01:00pm', '02:00pm', '03:00pm', '04:00pm', '05:00pm', '06:00pm', '07:00pm', '08:00pm', '09:00pm', '10:00pm', '11:00pm'],
-            DAY: [{ Month: 'January', Days: 31 }, { Month: 'Febuary', Days: 28 }, { Month: 'March', Days: 31 }, { Month: 'April', Days: 30 }, { Month: 'May', Days: 31 }
-                , { Month: 'June', Days: 30 }, { Month: 'July', Days: 31 }, { Month: 'August', Days: 31 }, { Month: 'September', Days: 30 }, { Month: 'October', Days: 31 }
-                , { Month: 'November', Days: 30 }, { Month: 'December', Days: 31 }],
-            MONTH: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         }
     }
 })();
@@ -406,6 +392,22 @@
 (function () {
     'use strict';
     angular.module('lidt')
+        .constant('chartLabelConst', chartLabelConst());
+
+    function chartLabelConst() {
+        return {
+            HOUR: ['12:00am', '01:00am', '02:00am', '03:00am', '04:00am', '05:00am', '06:00am', '07:00am', '08:00am', '09:00am', '10:00am', '11:00am'
+                , '12:00pm', '01:00pm', '02:00pm', '03:00pm', '04:00pm', '05:00pm', '06:00pm', '07:00pm', '08:00pm', '09:00pm', '10:00pm', '11:00pm'],
+            DAY: [{ Month: 'January', Days: 31 }, { Month: 'Febuary', Days: 28 }, { Month: 'March', Days: 31 }, { Month: 'April', Days: 30 }, { Month: 'May', Days: 31 }
+                , { Month: 'June', Days: 30 }, { Month: 'July', Days: 31 }, { Month: 'August', Days: 31 }, { Month: 'September', Days: 30 }, { Month: 'October', Days: 31 }
+                , { Month: 'November', Days: 30 }, { Month: 'December', Days: 31 }],
+            MONTH: ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
         .component('cardContainer', {
             templateUrl: 'card/container/card-container.tpl.html',
             controllerAs: 'vm',
@@ -421,28 +423,102 @@
         vm.totalExitCount = 0;
         vm.totalOccupantCount = 0;
         vm.totalAvailableCount = 0;
-        vm.clientId = 1;
+        vm.clientId = 9999;
 
         vm.refreshAll = refreshAll;
 
         (function _init() {
             refreshAll();
-            vm.devices.push({ ID: 'a', EntryCount: 1, ExitCount: 5});
-            vm.devices.push({ ID: 'b', EntryCount: 2, ExitCount: 5});
-            vm.devices.push({ ID: 'c', EntryCount: 3, ExitCount: 5});
-            vm.devices.push({ ID: 'd', EntryCount: 4, ExitCount: 5});
+            //vm.devices.push({ ID: 'a', EntryCount: 1, ExitCount: 5});
+            //vm.devices.push({ ID: 'b', EntryCount: 2, ExitCount: 5});
+            //vm.devices.push({ ID: 'c', EntryCount: 3, ExitCount: 5});
+            //vm.devices.push({ ID: 'd', EntryCount: 4, ExitCount: 5});
         })();
 
         function refreshAll() {
+            vm.totalEntryCount = 0;
+            vm.totalExitCount = 0;
+            vm.totalOccupantCount = 0;
+            vm.totalAvailableCount = 0;
             dataService.getAllClientDevices(vm.clientId)
                 .then(function (data) {
-                    vm.devices = data;
-                    vm.devices.map(function (device) {
-                        vm.totalEntryCount += device.EntryCount;
-                        vm.totalExitCount += device.ExitCount;
+                    var deviceIds = data;
+                    deviceIds.map(function (deviceId) {
+                        dataService.getDeviceCount(deviceId)
+                            .then(function(device) {
+                                var currentDevice = vm.devices.find(function(existingDevice)
+                                    {
+                                        return existingDevice.DeviceId = device[0].DeviceId;
+                                    });
+                                if (currentDevice)
+                                {
+                                    currentDevice.Entries = device[0].Entries;
+                                    currentDevice.Exits = device[0].Exits;
+                                }
+                                else
+                                {
+                                    vm.devices.push(device[0]);
+                                }
+                                vm.totalEntryCount += device[0].Entries;
+                                vm.totalExitCount += device[0].Exits;
+                            });
                     });
                     vm.totalOcuupantCount = vm.totalEntryCount - vm.totalExitCount;
                     vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
+                });
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerDeviceForm', {
+            templateUrl: 'form/register-device/register-device-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerUserForm', {
+            templateUrl: 'form/register-user/register-user-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
                 });
         }
     }
@@ -644,60 +720,6 @@
                     ]
                 }
             };
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('registerDeviceForm', {
-            templateUrl: 'form/register-device/register-device-form.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = ['dataService']
-
-    function Controller(dataService) {
-        var vm = this;
-        vm.submit = submit;
-
-        function submit(form) {
-            dataService.addDevice(form)
-                .then(function (response) {
-                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
-                }, function (error) {
-                    toastr.error('Something went wrong.', 'ERROR');
-                });
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('registerUserForm', {
-            templateUrl: 'form/register-user/register-user-form.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = ['dataService']
-
-    function Controller(dataService) {
-        var vm = this;
-        vm.submit = submit;
-
-        function submit(form) {
-            dataService.addDevice(form)
-                .then(function (response) {
-                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
-                }, function (error) {
-                    toastr.error('Something went wrong.', 'ERROR');
-                });
         }
     }
 })();

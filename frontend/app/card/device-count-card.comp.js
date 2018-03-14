@@ -30,11 +30,11 @@
         });
 
         function refresh() {
-            dataService.GetDeviceCount(vm.DeviceId)
-                .then(function (data) {
-                    vm.entryCount = data.EntryCount;
-                    vm.exitCount = data.ExitCount;
-                    vm.OccupantCount = vm.EntryCount - vm.ExitCount;
+            dataService.getDeviceCount(vm.deviceId)
+                .then(function (device) {
+                    vm.entryCount = device[0].Entries;
+                    vm.exitCount = device[0].Exits;
+                    vm.OccupantCount = vm.entryCount - vm.exitCount;
                 });
         }
     }
