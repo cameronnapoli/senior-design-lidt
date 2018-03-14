@@ -37,7 +37,7 @@
                             .then(function(device) {
                                 var currentDevice = vm.devices.find(function(existingDevice)
                                     {
-                                        return existingDevice.DeviceId = device[0].DeviceId;
+                                        return existingDevice.DeviceId === device[0].DeviceId;
                                     });
                                 if (currentDevice)
                                 {
@@ -50,10 +50,10 @@
                                 }
                                 vm.totalEntryCount += device[0].Entries;
                                 vm.totalExitCount += device[0].Exits;
+                                vm.totalOccupantCount += vm.totalEntryCount - vm.totalExitCount;
+                                vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
                             });
                     });
-                    vm.totalOcuupantCount = vm.totalEntryCount - vm.totalExitCount;
-                    vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
                 });
         }
     }

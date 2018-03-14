@@ -253,6 +253,37 @@
 (function () {
     'use strict';
     angular.module('lidt')
+        .component('calendar', {
+            templateUrl: 'calendar/calendar.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller
+        });
+
+    Controller.$inject = ['$scope', 'dataService']
+
+    function Controller($scope, dataService) {
+        var vm = this;
+        vm.eventSources = [];
+
+        (function _init() {
+            vm.calendar = {
+                height: 800,
+                editable: true,
+                header: {
+                    left: 'month basicWeek basicDay agendaWeek agendaDay',
+                    center: 'title',
+                    right: 'today prev,next'
+                },
+                eventClick: $scope.alertEventOnClick,
+                eventDrop: $scope.alertOnDrop,
+                eventResize: $scope.alertOnResize
+            }
+        })();
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
         .component('contentCard', {
             templateUrl: 'card/card.tpl.html',
             controllerAs: 'vm',
@@ -308,37 +339,6 @@
                     vm.OccupantCount = vm.entryCount - vm.exitCount;
                 });
         }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('calendar', {
-            templateUrl: 'calendar/calendar.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller
-        });
-
-    Controller.$inject = ['$scope', 'dataService']
-
-    function Controller($scope, dataService) {
-        var vm = this;
-        vm.eventSources = [];
-
-        (function _init() {
-            vm.calendar = {
-                height: 800,
-                editable: true,
-                header: {
-                    left: 'month basicWeek basicDay agendaWeek agendaDay',
-                    center: 'title',
-                    right: 'today prev,next'
-                },
-                eventClick: $scope.alertEventOnClick,
-                eventDrop: $scope.alertOnDrop,
-                eventResize: $scope.alertOnResize
-            }
-        })();
     }
 })();
 (function () {
@@ -444,7 +444,7 @@
                             .then(function(device) {
                                 var currentDevice = vm.devices.find(function(existingDevice)
                                     {
-                                        return existingDevice.DeviceId = device[0].DeviceId;
+                                        return existingDevice.DeviceId === device[0].DeviceId;
                                     });
                                 if (currentDevice)
                                 {
@@ -457,30 +457,12 @@
                                 }
                                 vm.totalEntryCount += device[0].Entries;
                                 vm.totalExitCount += device[0].Exits;
+                                vm.totalOccupantCount += vm.totalEntryCount - vm.totalExitCount;
+                                vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
                             });
                     });
-                    vm.totalOcuupantCount = vm.totalEntryCount - vm.totalExitCount;
-                    vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
                 });
         }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('graphsContainer', {
-            templateUrl: 'graph/container/graphs-container.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = []
-
-    function Controller() {
-        var vm = this;
-        
     }
 })();
 (function () {
@@ -532,6 +514,24 @@
                 }
             };
         })();
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('graphsContainer', {
+            templateUrl: 'graph/container/graphs-container.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = []
+
+    function Controller() {
+        var vm = this;
+        
     }
 })();
 (function () {
@@ -662,6 +662,60 @@
 (function () {
     'use strict';
     angular.module('lidt')
+        .component('registerDeviceForm', {
+            templateUrl: 'form/register-device/register-device-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerUserForm', {
+            templateUrl: 'form/register-user/register-user-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
         .component('sideNavbar', {
             templateUrl: 'navbar/side/side-navbar.tpl.html',
             controllerAs: 'vm',
@@ -718,60 +772,6 @@
         function logout()
         {
 
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('registerDeviceForm', {
-            templateUrl: 'form/register-device/register-device-form.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = ['dataService']
-
-    function Controller(dataService) {
-        var vm = this;
-        vm.submit = submit;
-
-        function submit(form) {
-            dataService.addDevice(form)
-                .then(function (response) {
-                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
-                }, function (error) {
-                    toastr.error('Something went wrong.', 'ERROR');
-                });
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('registerUserForm', {
-            templateUrl: 'form/register-user/register-user-form.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = ['dataService']
-
-    function Controller(dataService) {
-        var vm = this;
-        vm.submit = submit;
-
-        function submit(form) {
-            dataService.addDevice(form)
-                .then(function (response) {
-                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
-                }, function (error) {
-                    toastr.error('Something went wrong.', 'ERROR');
-                });
         }
     }
 })();
