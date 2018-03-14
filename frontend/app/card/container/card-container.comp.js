@@ -22,10 +22,6 @@
 
         (function _init() {
             refreshAll();
-            //vm.devices.push({ ID: 'a', EntryCount: 1, ExitCount: 5});
-            //vm.devices.push({ ID: 'b', EntryCount: 2, ExitCount: 5});
-            //vm.devices.push({ ID: 'c', EntryCount: 3, ExitCount: 5});
-            //vm.devices.push({ ID: 'd', EntryCount: 4, ExitCount: 5});
         })();
 
         function refreshAll() {

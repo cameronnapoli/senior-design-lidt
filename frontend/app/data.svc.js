@@ -41,12 +41,12 @@
             return deferred.promise;
         }
 
-        function getAllDeviceCountHistory(clientId) {
+        function getAllDeviceCountHistory(clientId, interval, date) {
             var deferred = $q.defer();
 
-            dataResource.getAllDeviceCountHistory({ clientId: clientId }).$promise
+            dataResource.getAllDeviceCountHistory({ clientId: clientId, interval: interval, date: date }).$promise
                 .then(function (data) {
-                    deferred.resolve(data);
+                    deferred.resolve(angular.fromJson(data));
                 }, function (error) {
                     toastr.error('Something went wrong', 'ERROR');
                 });

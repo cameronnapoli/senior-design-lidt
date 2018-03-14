@@ -189,12 +189,12 @@
             return deferred.promise;
         }
 
-        function getAllDeviceCountHistory(clientId) {
+        function getAllDeviceCountHistory(clientId, interval, date) {
             var deferred = $q.defer();
 
-            dataResource.getAllDeviceCountHistory({ clientId: clientId }).$promise
+            dataResource.getAllDeviceCountHistory({ clientId: clientId, interval: interval, date: date }).$promise
                 .then(function (data) {
-                    deferred.resolve(data);
+                    deferred.resolve(angular.fromJson(data));
                 }, function (error) {
                     toastr.error('Something went wrong', 'ERROR');
                 });
@@ -248,37 +248,6 @@
         function toggleMainContent() {
             vm.isExpanded = !vm.isExpanded;
         }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('calendar', {
-            templateUrl: 'calendar/calendar.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller
-        });
-
-    Controller.$inject = ['$scope', 'dataService']
-
-    function Controller($scope, dataService) {
-        var vm = this;
-        vm.eventSources = [];
-
-        (function _init() {
-            vm.calendar = {
-                height: 800,
-                editable: true,
-                header: {
-                    left: 'month basicWeek basicDay agendaWeek agendaDay',
-                    center: 'title',
-                    right: 'today prev,next'
-                },
-                eventClick: $scope.alertEventOnClick,
-                eventDrop: $scope.alertOnDrop,
-                eventResize: $scope.alertOnResize
-            }
-        })();
     }
 })();
 (function () {
@@ -339,6 +308,37 @@
                     vm.OccupantCount = vm.entryCount - vm.exitCount;
                 });
         }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('calendar', {
+            templateUrl: 'calendar/calendar.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller
+        });
+
+    Controller.$inject = ['$scope', 'dataService']
+
+    function Controller($scope, dataService) {
+        var vm = this;
+        vm.eventSources = [];
+
+        (function _init() {
+            vm.calendar = {
+                height: 800,
+                editable: true,
+                header: {
+                    left: 'month basicWeek basicDay agendaWeek agendaDay',
+                    center: 'title',
+                    right: 'today prev,next'
+                },
+                eventClick: $scope.alertEventOnClick,
+                eventDrop: $scope.alertOnDrop,
+                eventResize: $scope.alertOnResize
+            }
+        })();
     }
 })();
 (function () {
@@ -429,10 +429,6 @@
 
         (function _init() {
             refreshAll();
-            //vm.devices.push({ ID: 'a', EntryCount: 1, ExitCount: 5});
-            //vm.devices.push({ ID: 'b', EntryCount: 2, ExitCount: 5});
-            //vm.devices.push({ ID: 'c', EntryCount: 3, ExitCount: 5});
-            //vm.devices.push({ ID: 'd', EntryCount: 4, ExitCount: 5});
         })();
 
         function refreshAll() {
@@ -472,55 +468,19 @@
 (function () {
     'use strict';
     angular.module('lidt')
-        .component('registerDeviceForm', {
-            templateUrl: 'form/register-device/register-device-form.tpl.html',
+        .component('graphsContainer', {
+            templateUrl: 'graph/container/graphs-container.tpl.html',
             controllerAs: 'vm',
             controller: Controller,
             bindings: {
             }
         });
 
-    Controller.$inject = ['dataService']
+    Controller.$inject = []
 
-    function Controller(dataService) {
+    function Controller() {
         var vm = this;
-        vm.submit = submit;
-
-        function submit(form) {
-            dataService.addDevice(form)
-                .then(function (response) {
-                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
-                }, function (error) {
-                    toastr.error('Something went wrong.', 'ERROR');
-                });
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('registerUserForm', {
-            templateUrl: 'form/register-user/register-user-form.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = ['dataService']
-
-    function Controller(dataService) {
-        var vm = this;
-        vm.submit = submit;
-
-        function submit(form) {
-            dataService.addDevice(form)
-                .then(function (response) {
-                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
-                }, function (error) {
-                    toastr.error('Something went wrong.', 'ERROR');
-                });
-        }
+        
     }
 })();
 (function () {
@@ -535,65 +495,43 @@
             }
         });
 
-    Controller.$inject = ['dataService']
+    Controller.$inject = ['dataService', 'chartLabelConst']
 
-    function Controller(dataService)
+    function Controller(dataService, chartLabelConst)
     {
         var vm = this;
-        vm.refresh = refresh;
+        vm.data = [];
+        vm.series = [];
 
         (function _init() {
-            refresh();
-        })();
-
-        function refresh() {
-            //dataService.GetDeviceCount(vm.deviceId)
-            //    .then(function (data) {
-            //    });
-            vm.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-            vm.data = [
-                [65, 59, 80, 81, 56, 55, 40],
-                [28, 48, 40, 19, 86, 27, 90]
-            ];
-            vm.series = ['Series A', 'Series B'];
-            vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-            vm.options = {
-                scales: {
-                    yAxes: [
-                        {
-                            id: 'y-axis-1',
-                            type: 'linear',
-                            display: true,
-                            position: 'left'
-                        },
-                        {
-                            id: 'y-axis-2',
-                            type: 'linear',
-                            display: true,
-                            position: 'right'
+            vm.labels = chartLabelConst.HOUR;
+            dataService.getAllDeviceCountHistory(9999, 'day', '2018-03-13')
+                .then(function (devices) {
+                    for (var device in devices) {
+                        if (device === '$promise') {
+                            break;
                         }
-                    ]
+                        vm.data.push(devices[device]);
+                        vm.series.push('Device ' + device);
+                    }
+                });
+            vm.options = {
+                height: 800,
+                width: 800,
+                scales: {
+                    xAxes: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    },
+                    yAxes: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    }
                 }
             };
-        }
-    }
-})();
-(function () {
-    'use strict';
-    angular.module('lidt')
-        .component('graphsContainer', {
-            templateUrl: 'graph/container/graphs-container.tpl.html',
-            controllerAs: 'vm',
-            controller: Controller,
-            bindings: {
-            }
-        });
-
-    Controller.$inject = []
-
-    function Controller() {
-        var vm = this;
-        
+        })();
     }
 })();
 (function () {
@@ -614,21 +552,23 @@
     {
         var vm = this;
         vm.data = [];
+        vm.series = [];
         //vm.refresh = refresh;
 
         (function _init() {
             vm.labels = chartLabelConst.HOUR;
-            //dataService.GetAllDeviceCountHistory(clientId, interval, startTime, endTime, month)
-            //    .then(function (data) {
-            //        data.map(function (device)
-            //        {
-            //            vm.data.push(device.CountData);
-            //            vm.series.push('Device ' + device.Name);
-            //        })
-            //    });
-            vm.data = [[65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80],
-                [28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90, 28, 48, 40]];
-            vm.series = ['Device 1', 'Device 2'];
+            dataService.getAllDeviceCountHistory(9999, 'day', '2018-03-13')
+                .then(function (devices) {
+                    for (var device in devices)
+                    {
+                        if (device === '$promise')
+                        {
+                            break;
+                        }
+                        vm.data.push(devices[device]);
+                        vm.series.push('Device ' + device);
+                    }
+                });
             vm.options = {
                 height: 800,
                 width: 800,
@@ -680,47 +620,43 @@
             }
         });
 
-    Controller.$inject = ['dataService']
+    Controller.$inject = ['dataService', 'chartLabelConst']
 
-    function Controller(dataService)
+    function Controller(dataService, chartLabelConst)
     {
         var vm = this;
-        vm.refresh = refresh;
+        vm.data = [];
+        vm.series = [];
 
         (function _init() {
-            refresh();
-        })();
-
-        function refresh() {
-            //dataService.GetDeviceCount(vm.deviceId)
-            //    .then(function (data) {
-            //    });
-            vm.labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-            vm.data = [
-                [65, 59, 80, 81, 56, 55, 40],
-                [28, 48, 40, 19, 86, 27, 90]
-            ];
-            vm.series = ['Series A', 'Series B'];
-            vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-            vm.options = {
-                scales: {
-                    yAxes: [
-                        {
-                            id: 'y-axis-1',
-                            type: 'linear',
-                            display: true,
-                            position: 'left'
-                        },
-                        {
-                            id: 'y-axis-2',
-                            type: 'linear',
-                            display: true,
-                            position: 'right'
+            vm.labels = chartLabelConst.HOUR;
+            dataService.getAllDeviceCountHistory(9999, 'day', '2018-03-13')
+                .then(function (devices) {
+                    for (var device in devices) {
+                        if (device === '$promise') {
+                            break;
                         }
-                    ]
+                        vm.data.push(devices[device]);
+                        vm.series.push('Device ' + device);
+                    }
+                });
+            vm.options = {
+                height: 800,
+                width: 800,
+                scales: {
+                    xAxes: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    },
+                    yAxes: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    }
                 }
             };
-        }
+        })();
     }
 })();
 (function () {
@@ -782,6 +718,60 @@
         function logout()
         {
 
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerDeviceForm', {
+            templateUrl: 'form/register-device/register-device-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('Device ' + form.id + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
+        }
+    }
+})();
+(function () {
+    'use strict';
+    angular.module('lidt')
+        .component('registerUserForm', {
+            templateUrl: 'form/register-user/register-user-form.tpl.html',
+            controllerAs: 'vm',
+            controller: Controller,
+            bindings: {
+            }
+        });
+
+    Controller.$inject = ['dataService']
+
+    function Controller(dataService) {
+        var vm = this;
+        vm.submit = submit;
+
+        function submit(form) {
+            dataService.addDevice(form)
+                .then(function (response) {
+                    toastr.success('User ' + response.userId + ' has been registered!', 'SUCCESS');
+                }, function (error) {
+                    toastr.error('Something went wrong.', 'ERROR');
+                });
         }
     }
 })();
