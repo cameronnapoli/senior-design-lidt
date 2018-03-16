@@ -414,9 +414,9 @@
             controller: Controller
         });
 
-    Controller.$inject = ['dataService']
+    Controller.$inject = ['dataService', '$interval']
 
-    function Controller(dataService) {
+    function Controller(dataService, $interval) {
         var vm = this;
         vm.devices = [];
         vm.totalEntryCount = 0;
@@ -429,6 +429,7 @@
 
         (function _init() {
             refreshAll();
+            $interval(refreshAll, 15000);
         })();
 
         function refreshAll() {
@@ -457,7 +458,7 @@
                                 }
                                 vm.totalEntryCount += device[0].Entries;
                                 vm.totalExitCount += device[0].Exits;
-                                vm.totalOccupantCount += vm.totalEntryCount - vm.totalExitCount;
+                                vm.totalOccupantCount = vm.totalEntryCount - vm.totalExitCount;
                                 vm.totalAvailableCount = data.AvailableCount - vm.totalOccupantCount;
                             });
                     });
