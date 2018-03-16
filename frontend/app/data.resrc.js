@@ -15,8 +15,7 @@
                 params: {
                     clientId: '@clientId'
                 },
-                isArray: true,
-                cache: true
+                isArray: true
             },
             getDeviceCount: {
                 method: 'GET',
@@ -24,8 +23,7 @@
                 params: {
                     deviceId: '@deviceId'
                 },
-                isArray: true,
-                cache: true
+                isArray: true
             },
             getAllDeviceCountHistory: {
                 method: 'GET',
@@ -36,16 +34,14 @@
                     startTime: '@startTime',
                     endTime: '@endTime',
                     month: '@month'
-                },
-                cache: true
+                }
             },
             addDevice: {
                 method: 'POST',
                 url: apiUrl + 'AddDevice',
                 params: {
                     deviceId: '@deviceId'
-                },
-                cache: true
+                }
             },
             addUser: {
                 method: 'POST',
@@ -53,8 +49,7 @@
                 params: {
                     clientId: '@clientId',
                     user: '@user'
-                },
-                cache: true
+                }
             }
         });
     }

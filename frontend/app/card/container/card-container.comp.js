@@ -22,7 +22,7 @@
 
         (function _init() {
             refreshAll();
-            $interval(refreshAll, 15000);
+            $interval(refreshAll, 10000);
         })();
 
         function refreshAll() {
