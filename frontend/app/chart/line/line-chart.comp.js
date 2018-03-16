@@ -20,8 +20,9 @@
         //vm.refresh = refresh;
 
         (function _init() {
+            var today = (new Date().toISOString()).substring(0, 10);
             vm.labels = chartLabelConst.HOUR;
-            dataService.getAllDeviceCountHistory(9999, 'day', '2018-03-13')
+            dataService.getAllDeviceCountHistory(9999, 'day', today)
                 .then(function (devices) {
                     for (var device in devices)
                     {
